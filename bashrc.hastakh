@@ -1,0 +1,25 @@
+# ~/.bashrc: executed by bash for non-login shells.
+
+export EDITOR='gvim'                                                                                # gvim as default editor
+shopt -s histappend                                                                                 # append history instead of overwritting
+export HISTCONTROL=ignoredups                                                                       # avoid succesive duplicates in the bash command history
+export PATH=.:${PATH}
+
+
+# Add bash aliases.
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+#BIND KEYS
+bindkey     "^[[1;5D" backward-word
+bindkey     "^[[1;5C" forward-word
+bindkey     "\e[1~"   beginning-of-line                                                             # Home
+bindkey     "\e[7~"   beginning-of-line                                                             # Home rxvt
+bindkey     "\e[2~"   overwrite-mode                                                                # Ins
+bindkey     "\e[3~"   delete-char                                                                   # Delete
+bindkey     "\e[4~"   end-of-line                                                                   # End
+bindkey     "\e[8~"   end-of-line                                                                   # End rxvt
+
+bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
+
