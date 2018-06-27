@@ -19,6 +19,6 @@ alias h='history'
 #FUNCTIONS
 mkcd () {
     mkdir $1
-    cd -v $1
+    cd    $1
 }
 
