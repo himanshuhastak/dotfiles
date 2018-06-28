@@ -23,7 +23,7 @@ bind     '"\e[8~"   end-of-line'                                                
 
 
 
-if  ! [ grep  ~/.bash_aliases" ~/.bashrc > /dev/null ] ; then
+if   [ `grep  "~/.bash_aliases" ~/.bashrc >> /dev/null` ] ; then
     . ~/.bash_aliases
 fi
 
