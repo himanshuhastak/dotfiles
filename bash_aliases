@@ -26,6 +26,8 @@ alias Calc='python -c "from math import *; print( \!* )"'                       
 alias gcl='git clone'
 alias ga='git add'
 alias grm='git rm'
+alias gcm='git commit -m'
+alias gpu='git push -u origin master'
 
 
 
