@@ -18,3 +18,13 @@ bind     '"\e[3~"   delete-char'                                                
 bind     '"\e[4~"   end-of-line'                                                                   # End
 bind     '"\e[8~"   end-of-line'                                                                   # End rxvt
 
+
+
+
+
+
+if  ! [ grep  ~/.bash_aliases" ~/.bashrc > /dev/null ] ; then
+    . ~/.bash_aliases
+fi
+
+
