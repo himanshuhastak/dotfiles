@@ -16,11 +16,11 @@ alias grep='grep --color=auto'                                                  
 #MISC
 alias df='df -h'                                                                                                                # df human redable
 alias du='du -sh'                                                                                                               # du human readable        
-alias rm='rm -ivf'                                                                                                              # prompt before removal
-alias mv='mv -ivf'                                                                                                              # prompt before removal
+alias rm='rm -iv'                                                                                                              # prompt before removal
+alias mv='mv -iv'                                                                                                              # prompt before removal
 
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
-alias Calc='python -c "from math import *; print( \!* )"'                                                                       # calculator from Python
+alias Calc='python3 -c "from math import *; print ( $* )"'                                                                       # calculator from Python
 
 #GIT ALIASES
 alias gcl='git clone'
@@ -29,7 +29,7 @@ alias grm='git rm'
 alias gcm='git commit -m'
 alias gpu='git push -u origin master'
 
-
+alias CAL='function _calc() {  python3 -c "from math import *  ; print("$*")" ; };_calc'
 
 #FUNCTIONS
 mkcd () {
@@ -37,5 +37,7 @@ mkcd () {
     cd    $1
 }
 
-
+ccalc () {
+    python -c "from math import *  ; print "$@" " ;
+}
 source ~/.bashrc.hastakh

@@ -1,4 +1,42 @@
-# ~/.bashrc: executed by bash for non-login shells.
+#Colors !
+#https://misc.flogisoft.com/bash/tip_colors_and_formatting
+red="\[\033[1;31m\]"
+green="\[\033[0;92m\]"
+yellow="\[\033[0;33m\]"
+blue="\[\033[1;34m\]"
+magenta="\[\033[0;35m\]"
+cyan="\[\033[0;36m\]"
+white="\[\033[0;37m\]"
+colorOff="\[\033[0m\]" 
+
+#setup prompt
+function __prompt_command() {
+    EXIT="$?"                                                                                       # exit status of last command
+    PS1=""
+    # debian chroot stuff (take it or leave it)
+    PS1+="${debian_chroot:+($debian_chroot)}"
+    #based on return status either display Red/Green username
+    if [ $EXIT -eq 0 ]; then
+        PS1+="$green\h$colorOff"
+    else
+        PS1+="$red\h$colorOff"
+    fi
+   #Display working Dir
+   PS1+="$white:\w$colorOff"
+
+    # prompt $ or # for root
+    PS1+="\$ "
+}
+PROMPT_COMMAND=__prompt_command
+
+
+
+
+#Default PS1
+#\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
+
+
+
 
 bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
 
@@ -17,12 +55,9 @@ bind     '"\e[2~"   overwrite-mode'                                             
 bind     '"\e[3~"   delete-char'                                                                   # Delete
 bind     '"\e[4~"   end-of-line'                                                                   # End
 bind     '"\e[8~"   end-of-line'                                                                   # End rxvt
+bind     '"^[p~": history-search-backward'                                                        # TCSH equivalent history search
 
-
-
-
-
-
+#ALIASES
 if   [ `grep  "~/.bash_aliases" ~/.bashrc >> /dev/null` ] ; then
     . ~/.bash_aliases
 fi

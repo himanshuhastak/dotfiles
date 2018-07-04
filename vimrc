@@ -8,10 +8,15 @@ set mouse=a                 											" enable mouse support in vim
 set title                   											" Show title
 set autoread                											" automatically read file that has been changed outside vim
 set autochdir               											" automatically change the current Dir
-set diffopt=iwhite          											" ignore white space in vimdiff
 set backspace=indent,eol,start  										" make backspace work
 "set relativenumber         											" set relative numbering
 
+"GVIM DIFF 
+if &diff
+    " diff mode
+    set diffopt+=iwhite
+    set diffopt+=horizontal	
+endif
 "ENABLE FILETYPES
 filetype on
 filetype plugin on
@@ -163,9 +168,13 @@ set rtp+=~/.vim/bundle/Vundle.vim           							" set the runtime path to inc
 call vundle#begin()         		    							    " a path where Vundle should install plugins
 Plugin 'VundleVim/Vundle.vim'               							" let Vundle manage Vundle, required
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'godlygeek/tabular.git'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Rykka/riv.vim'
 
 "NERDTree
 let NERDTreeQuitOnOpen=0
@@ -178,6 +187,15 @@ let g:tagbar_ctags_bin = "ctags"
 let g:tagbar_show_visibility = 1
 let g:tagbar_autofocus = 0
 
+"Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 call vundle#end()            " required
 filetype plugin on
