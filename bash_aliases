@@ -1,5 +1,5 @@
 #GENERAL
-alias g='gvim'                                                                                                                  # alias gvim
+alias g='gvim -o'                                                                                                                  # alias gvim
 alias h='history'
 alias s='source'
 alias mkdir='mkdir -pv'                                                                                                         # make parentdir
@@ -20,7 +20,6 @@ alias rm='rm -iv'                                                               
 alias mv='mv -iv'                                                                                                              # prompt before removal
 
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
-alias Calc='python3 -c "from math import *; print ( $* )"'                                                                       # calculator from Python
 
 #GIT ALIASES
 alias gcl='git clone'
@@ -29,15 +28,19 @@ alias grm='git rm'
 alias gcm='git commit -m'
 alias gpu='git push -u origin master'
 
-alias CAL='function _calc() {  python3 -c "from math import *  ; print("$*")" ; };_calc'
 
 #FUNCTIONS
 mkcd () {
-    mkdir $1
-    cd    $1
+    mkdir "${1}"
+    cd -v    "${1}" || echo "Error changing to \"${1}\" "
 }
 
 ccalc () {
-    python -c "from math import *  ; print "$@" " ;
+    python -c "from math import *  ; print "${*}" " ;
 }
+
+prepend () {
+    export "${1}"="${2}":\$"${1}"
+}
+
 source ~/.bashrc.hastakh
