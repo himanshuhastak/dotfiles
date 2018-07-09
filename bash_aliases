@@ -39,8 +39,40 @@ ccalc () {
     python -c "from math import *  ; print "${*}" " ;
 }
 
-prepend () {
-    export "${1}"="${2}":\$"${1}"
+prepend() {
+  local var=$1
+  local val=$2
+  local sep=${3:-":"}
+  [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return # already present
+  [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
+  printf -v "$var" '%s%s%s' "$val" "$sep" "${!var}" # prepend
+}
+
+append() {
+  local var=$1
+  local val=$2
+  local sep=${3:-":"}
+  [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return # already present
+  [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
+  printf -v "$var" '%s%s%s' "${!var}" "$sep" "${val}" # append
+}
+
+remove() {
+  local var=$1
+  local val=$2
+  local sep=${3:-":"}
+  while [[ ${!var} =~ (^|.*"$sep")"$val"($|"$sep".*) ]]; do
+    if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then
+      # match is between both leading and trailing content
+      printf -v "$var" '%s%s' "${BASH_REMATCH[1]%$sep}" "${BASH_REMATCH[2]}"
+    elif [[ ${BASH_REMATCH[1]} ]]; then
+      # match is at the end
+      printf -v "$var" "${BASH_REMATCH[1]%$sep}"
+    else
+      # match is at the beginning
+      printf -v "$var" "${BASH_REMATCH[2]#$sep}"
+    fi
+  done
 }
 
 source ~/.bashrc.hastakh
