@@ -33,6 +33,7 @@ function __prompt_command() {
 PROMPT_COMMAND=__prompt_command
 
 stty erase ^?                                                                                       # make backspace delete a char 
+stty sane
 
 bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
 
