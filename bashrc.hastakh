@@ -1,5 +1,5 @@
+# shellcheck shell=bash
 #Colors !
-#https://misc.flogisoft.com/bash/tip_colors_and_formatting
 red="\[\033[1;31m\]"
 green="\[\033[0;92m\]"
 yellow="\[\033[0;33m\]"
@@ -10,6 +10,9 @@ white="\[\033[0;37m\]"
 colorOff="\[\033[0m\]" 
 
 #setup prompt
+#Default PS1
+#\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
+
 function __prompt_command() {
     EXIT="$?"                                                                                       # exit status of last command
     PS1=""
@@ -29,14 +32,7 @@ function __prompt_command() {
 }
 PROMPT_COMMAND=__prompt_command
 
-stty erase ^?
-
-
-#Default PS1
-#\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
-
-
-
+stty erase ^?                                                                                       # make backspace delete a char 
 
 bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
 
@@ -55,11 +51,13 @@ bind     '"\e[2~"   overwrite-mode'                                             
 bind     '"\e[3~"   delete-char'                                                                   # Delete
 bind     '"\e[4~"   end-of-line'                                                                   # End
 bind     '"\e[8~"   end-of-line'                                                                   # End rxvt
-bind     '"^[p~": history-search-backward'                                                        # TCSH equivalent history search
+bind     '"^[p~": history-search-backward'                                                         # TCSH equivalent history search
 
 #ALIASES
-if   [ `grep  "~/.bash_aliases" ~/.bashrc >> /dev/null` ] ; then
-    . ~/.bash_aliases
-fi
+# shellcheck source=$HOME                                                                          # disable relative paths
+# shell check disable=SC2088                                                                       # disable check for home
 
-
+#if   !  grep -q '.bash_aliases' "${HOME}"/.bashrc  ; then
+#    . ~/.bash_aliases
+#fi
+ 
