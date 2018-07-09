@@ -23,6 +23,7 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 #GIT ALIASES
 alias gcl='git clone'
+alias gpul='git pull'
 alias ga='git add'
 alias grm='git rm'
 alias gcm='git commit -m'
