@@ -35,9 +35,18 @@ mkcd () {
     cd -v    "${1}" || echo "Error changing to \"${1}\" "
 }
 
+GITit() {
+    ga "$1" ;
+    gcm "$2"
+    gpu
+}
+
+
 ccalc () {
     python -c "from math import *  ; print "${*}" " ;
 }
+
+#https://stackoverflow.com/questions/24515385/is-there-a-general-way-to-add-prepend-remove-paths-from-general-environment-vari
 
 prepend() {
   local var=$1
