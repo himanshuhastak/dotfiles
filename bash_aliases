@@ -22,6 +22,8 @@ alias mv='mv -iv'                                                               
 
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
+alias tao='task add project:office'
+
 #GIT ALIASES
 alias gcl='git clone'
 alias gpul='git pull'
@@ -34,7 +36,7 @@ alias gpu='git push -u origin master'
 #FUNCTIONS
 mkcd () {
     mkdir "${1}"
-    cd -v    "${1}" || echo "Error changing to \"${1}\" "
+    cd    "${1}" || echo "Error changing to \"${1}\" "
 }
 
 GITit() {
@@ -45,6 +47,10 @@ GITit() {
 
 ccalc () {
     python -c "from math import *  ; print ""${*}"" " ;
+}
+
+TAR () {
+    tar -czf "$1".tar.gz "$1";
 }
 
 #Following code is copied from ::-
@@ -65,7 +71,6 @@ append() {
   local sep=${3:-":"}
   [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return                                                                         # already present
   [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; }                                                                  # empty
-  # shellcheck disable=SC2059                                                                                                   # disable printf  
   printf -v "$var" '%s%s%s' "${!var}" "$sep" "${val}"                                                                           # append
 }
 
@@ -75,16 +80,13 @@ remove() {
   local sep=${3:-":"}
   while [[ ${!var} =~ (^|.*"$sep")"$val"($|"$sep".*) ]]; do
     if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then                                                                     # match is between both leading and trailing content
-      # shellcheck disable=SC2059                                                                                               # disable printf  
       printf -v "$var" '%s%s' "${BASH_REMATCH[1]%$sep}" "${BASH_REMATCH[2]}"
     elif [[ ${BASH_REMATCH[1]} ]]; then                                                                                         # match is at the end
-      # shellcheck disable=SC2059                                                                                               # disable printf  
       printf -v "$var" "${BASH_REMATCH[1]%$sep}"
     else                                                                                                                        # match is at the beginning
-      # shellcheck disable=SC2059                                                                                               # disable printf  
       printf -v "$var" "${BASH_REMATCH[2]#$sep}"
     fi
   done
 }
-# shellcheck disable=SC1090                                                                                                     # disable relative path
+# shellcheck source=/dev/null                                                                                                   # disable relative path
 source ~/.bashrc.hastakh

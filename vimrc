@@ -17,12 +17,6 @@ if &diff
     set diffopt+=iwhite
     set diffopt+=horizontal	
 endif
-"ENABLE FILETYPES
-filetype on
-filetype plugin on
-filetype indent on          											" automatic, language-dependent indentation, syntax coloring and other functionality
-syntax enable
-syntax on
 
 "SEARCHING IN FILE
 	" with both ignorecase and smartcase turned on, a search is case-insensitive if you enter the search string in ALL lower case ; if your search string 
@@ -111,9 +105,6 @@ set laststatus=2
 set hidden                  											" hide buffers instead of closing them
 set ttyfast                 											" fast scrolling
 set gdefault                											" %s/foo/bar/ will assume %s/foo/bar/g 
-set history=1000
-set undolevels=1000
-"set undofile
 "set shortmess+=A               										" ignore annoying swapfile messages 
 set shortmess+=W                										" don't echo [w]/[written] when writing
 set shortmess+=a                										" use abbreviations in messages eg. `[RO]` instead of `[readonly]`
@@ -121,6 +112,16 @@ set guifont=Courier\ 10\ Pitch  										" Default font
 set updatecount=80              										" update swapfiles every 80 typed chars
 set updatetime=2000             										" same as YCM
 set tag=tags
+
+"UNDO
+set history=100
+set undolevels=100
+" Create undo-dir if it doesnot exist
+if !isdirectory($HOME."/.vim/undo-dir")
+    call mkdir($HOME."/.vim/undo-dir", "", 0700)
+endif
+set undodir=~/.vim/undo-dir
+set undofile
 
 " FINDING FILES
 set path+=**                											" search in subfolder ; provide tab-completion  
@@ -130,10 +131,17 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,*.o        					" ignore following in w
 
 "SYSTEMVERILOG SYNTAX
 syntax on
+syntax enable
 au BufNewFile,BufRead *.sv,*.vpp,*.svh,*.vh,*.v so ~/.vim/syntax/verilog_systemverilog.vim
 
 "SYNTAX HIGHLIGHTING FOR TRACE FILES
-au BufRead,BufNewFile *.trc so ~/trc.vim
+"au BufRead,BufNewFile *.trc so ~/trc.vim
+
+" USE ONLY WHEN OPENING VERY LARGE FILES FOR VIEWING
+"set nobackup                                                            " no backup files
+"set nowritebackup                                                       " only in case you don't want a backup file while editing
+"set noswapfile                                                          " no swap files
+"set noundofile                                                          " no undofile
 
 
 "DISBALE KEYS
@@ -143,21 +151,12 @@ au BufRead,BufNewFile *.trc so ~/trc.vim
 "noremap <Right> <NOP>
 "nnoremap j gj
 "nnoremap k gk
+
 ""DISABLE HELP
 "inoremap <F1> <ESC>
 "nnoremap <F1> <ESC>
 "vnoremap <F1> <ESC>
-"
-"######MENU BAR
-"
-"map <silent> <C-F2> :if &guioptions =~# 'T' <Bar>
-" \set guioptions-=T <Bar>
-" \set guioptions-=m <bar>
-" \else <Bar>
-" \set guioptions�=T <Bar>
-" \set guioptions+=m <Bar>
-" \endif<CR>
-"
+
 "##################################PLUGINS####################################
 "VUNDLE
 
@@ -198,13 +197,18 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 call vundle#end()            " required
-filetype plugin on
 
 "COLORSCHEME
 highlight Comment cterm=italic gui=italic
 colorscheme torte
 
-"PluginInstall Krishna
+" call  "filetype plugin on" after pulgins are done
+"ENABLE FILETYPES
+filetype on
+filetype plugin on
+filetype indent on          											" automatic, language-dependent indentation, syntax coloring and other functionality
+
+"############################################################ PluginInstall Krishna #################################################################"
 
 "" set the runtime path to include Vundle and initialize
 "set rtp+=~/.vim/bundle/Vundle.vim
