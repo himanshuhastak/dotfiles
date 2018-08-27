@@ -200,7 +200,7 @@ call vundle#end()            " required
 
 "COLORSCHEME
 highlight Comment cterm=italic gui=italic
-colorscheme torte
+colorscheme default
 
 " call  "filetype plugin on" after pulgins are done
 "ENABLE FILETYPES
