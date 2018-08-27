@@ -25,7 +25,7 @@ function __prompt_command() {
         PS1+="$red\h$colorOff"
     fi
    #Display working Dir
-   PS1+="$white:\w$colorOff"
+   PS1+="$magenta:\w$colorOff"
 
     # prompt $ or # for root
     PS1+="\$ "
