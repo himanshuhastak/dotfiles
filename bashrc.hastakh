@@ -1,64 +1,85 @@
 # shellcheck shell=bash
-#Colors !
-red="\[\033[1;31m\]"
-green="\[\033[0;92m\]"
-yellow="\[\033[0;33m\]"
-blue="\[\033[1;34m\]"
-magenta="\[\033[0;35m\]"
-cyan="\[\033[0;36m\]"
-white="\[\033[0;37m\]"
-colorOff="\[\033[0m\]" 
-
-#setup prompt
-#Default PS1
-#\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
-
-function __prompt_command() {
-    EXIT="$?"                                                                                       # exit status of last command
-    PS1=""
-    # debian chroot stuff (take it or leave it)
-    PS1+="${debian_chroot:+($debian_chroot)}"
-    #based on return status either display Red/Green username
-    if [ $EXIT -eq 0 ]; then
-        PS1+="$green\h$colorOff"
-    else
-        PS1+="$red\h$colorOff"
-    fi
-   #Display working Dir
-   PS1+="$magenta:\w$colorOff"
-
-    # prompt $ or # for root
-    PS1+="\$ "
-}
-PROMPT_COMMAND=__prompt_command
 
 stty erase ^?                                                                                       # make backspace delete a char 
 stty sane
 
 bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
+bind 'set show-all-if-ambiguous on'
 
+#BASH VARIABLES
 export EDITOR='gvim'                                                                                # gvim as default editor
-shopt -s histappend                                                                                 # append history instead of overwritting
 export HISTCONTROL=ignoredups                                                                       # avoid succesive duplicates in the bash command history
+export CDPATH=:~:~/Documents
 export PATH=.:${PATH}
+#DIRSTACK can be used with pushd popd
+export GLOBINORE=
+export IFS='\n '
 
+
+function __prompt_command() {
+    shopt -s promptvars                                                                             # prompt strings undergo parameter expansion, command substitution, arithmetic expansion, and quote removal after being expanded
+#Colors !
+    local red="\[\033[1;31m\]"
+        local green="\[\033[0;92m\]"
+        local yellow="\[\033[0;33m\]"
+        local blue="\[\033[1;34m\]"
+        local magenta="\[\033[0;35m\]"
+        local cyan="\[\033[0;36m\]"
+        local white="\[\033[0;37m\]"
+        local colorOff="\[\033[0m\]" 
+        EXIT="$?"                                                                                   # exit status of last command
+        PS1=""
+        #debian chroot stuff (take it or leave it)
+        PS1+="${debian_chroot:+($debian_chroot)}"
+        #based on return status either display Red/Green username
+        if [ $EXIT -eq 0 ]; then
+            PS1+="$green\h$colorOff"
+        else
+            PS1+="$red\h$colorOff"
+        fi
+        #Display working Dir
+        PS1+="$magenta:\w$colorOff"
+        # prompt $ or # for root
+        PS1+="\$ "
+}
+PROMPT_COMMAND=__prompt_command
 
 #BIND KEYS
 bind     '"^[[1;5D" backward-word'
 bind     '"^[[1;5C" forward-word'
-bind     '"\e[1~"   beginning-of-line'                                                             # Home
-bind     '"\e[7~"   beginning-of-line'                                                             # Home rxvt
-bind     '"\e[2~"   overwrite-mode'                                                                # Ins
-bind     '"\e[3~"   delete-char'                                                                   # Delete
-bind     '"\e[4~"   end-of-line'                                                                   # End
-bind     '"\e[8~"   end-of-line'                                                                   # End rxvt
-bind     '"^[p~": history-search-backward'                                                         # TCSH equivalent history search
+bind     '"\e[1~"   beginning-of-line'                                                              # Home
+bind     '"\e[7~"   beginning-of-line'                                                              # Home rxvt
+bind     '"\e[2~"   overwrite-mode'                                                                 # Ins
+bind     '"\e[3~"   delete-char'                                                                    # Delete
+bind     '"\e[4~"   end-of-line'                                                                    # End
+bind     '"\e[8~"   end-of-line'                                                                    # End rxvt
+bind     '"^[p~": history-search-backward'                                                          # TCSH equivalent history search
 
 #ALIASES
-# shellcheck source=$HOME                                                                          # disable relative paths
-# shell check disable=SC2088                                                                       # disable check for home
+# shellcheck source=$HOME                                                                           # disable relative paths
+# shell check disable=SC2088                                                                        # disable check for home
 
 #if   !  grep -q '.bash_aliases' "${HOME}"/.bashrc  ; then
 #    . ~/.bash_aliases
 #fi
- 
+
+#SHELL OPTS                                                                                         # Read bash man
+shopt -s autocd                                                                                     
+shopt -s cdspell                                                                                    
+shopt -s checkjobs                                                                                  
+shopt -s cmdhist                                                                                    
+shopt -s direxpand                                                                                  
+shopt -s dirspell                                                                                   
+shopt -s dotglob                                                                                   
+shopt -s expand_aliases                                                                             
+shopt -s extglob                                                                                    
+shopt -s extquote
+shopt -s histappend                                                                                 
+shopt -s interactive_comments                                                                       
+shopt -s nocaseglob                                                                                 
+shopt -s nocasematch                                                                                
+shopt -s globstar                                                                                   
+shopt -s no_empty_cmd_completion                                                                    
+set -s sourcepath                                                                                   
+set -s complete_fullquote
+

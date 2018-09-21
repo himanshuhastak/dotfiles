@@ -13,6 +13,8 @@ alias ls.='ls -d .* --color=auto'                                               
 alias lsd='ls -d */ --color=auto'                                                                                               # show all dirs
 #GREP COLOUR
 alias grep='grep --color=auto'                                                                                                  # color grep
+#COLORDIFF
+alias diff='colordiff'
 
 #MISC
 alias df='df -h'                                                                                                                # df human redable
@@ -45,12 +47,20 @@ GITit() {
     gpu
 }
 
-ccalc () {
+Calc () {
     python -c "from math import *  ; print ""${*}"" " ;
 }
 
-TAR () {
+tarit () {
     tar -czf "$1".tar.gz "$1";
+}
+
+snow () {
+        clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS));sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
+}
+
+cmdHist () {
+    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a; }' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
 #Following code is copied from ::-
