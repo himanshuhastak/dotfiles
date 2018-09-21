@@ -10,6 +10,8 @@ set autoread                											" automatically read file that has been c
 set autochdir               											" automatically change the current Dir
 set backspace=indent,eol,start  										" make backspace work
 "set relativenumber         											" set relative numbering
+set backup
+set backupext=.org
 
 "GVIM DIFF 
 if &diff
@@ -71,7 +73,7 @@ set encoding=utf-8          											" UTF-8 text encoding by default
 "DISPLAY
 set ruler                   											" display current cursor position in lower right corner
 set cursorcolumn            											" highlite current column 
-"set cursorline             											" highlite current row
+set cursorline             											" highlite current row
 highlight CursorLine guibg=lightblue ctermbg=lightgray
 set scrolloff=3             											" option determines the number of context lines you would like to see above and below the cursor.
 "set listchars=tab:\❘\      											" indentation guidelines
