@@ -11,7 +11,7 @@ export EDITOR='gvim'                                                            
 export HISTCONTROL=ignoredups                                                                       # avoid succesive duplicates in the bash command history
 export HISTFILE=~/.bash_history
 export HISTFILESIZE=5000
-export HISTIGNORE="ls:[bf]g:exit:pwd:clear"
+export HISTIGNORE="ls:[bf]g:exit:pwd:clear:cd ..:cd ."
 export HISTSIZE=-1
 export CDPATH="~:~/Documents:~/GIT"
 export PATH=".:${PATH}"
@@ -79,7 +79,7 @@ set -o noclobber        # set -C                                                
 #set -o noexec          # set -n                                                                    #Read commands but do not execute them
 set -o monitor          # set -m                                                                    # All processes run in a separate process group
 set -o history
-set -o nounset          # set -u
+#set -o nounset          # set -u
 #set -o verbose         # set -v
 #set -o xtrace          # set -x
 #set -o braceexpand     # set -B
