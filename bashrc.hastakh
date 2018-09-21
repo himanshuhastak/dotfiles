@@ -16,7 +16,7 @@ export HISTSIZE=-1
 export CDPATH="~:~/Documents:~/GIT"
 export PATH=".:${PATH}"
 export GLOBINORE=
-export FIGNORE=".swp:~"
+export FIGNORE=".swp:~:.org"
 
 
 function __prompt_command() {
