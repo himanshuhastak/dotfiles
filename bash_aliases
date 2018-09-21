@@ -56,7 +56,6 @@ Calc () {
     python -c "from math import *  ; print "${*}" " ;
 }
 
-
 snow () {
         clear;
         while :; do 
