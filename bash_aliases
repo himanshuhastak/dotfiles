@@ -44,10 +44,11 @@ mkcd () {
 }
 
 GIT () {
-    file="$1"
-    comment="$2"
-    ga $file ;
-    gcm $comment
+    IFS='\n'
+    local file="$1"
+    local comment="$2"
+    ga "$file" ;
+    gcm "$comment"
     gpu
 }
 
