@@ -25,6 +25,8 @@ alias mv='mv -iv'                                                               
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 alias tao='task add project:office'
+alias TAR='tar -cvzf'
+alias UNTAR='tar -xvzf'
 
 #GIT ALIASES
 alias gcl='git clone'
@@ -38,29 +40,33 @@ alias gpu='git push -u origin master'
 #FUNCTIONS
 mkcd () {
     mkdir "${1}"
-    cd    "${1}" || echo "Error changing to \"${1}\" "
+    cd    "${1}" || echo 'Error changing to' "${1}" 
 }
 
-GITit() {
-    ga "$1" ;
-    gcm "$2"
+GIT () {
+    file="$1"
+    comment="$2"
+    ga $file ;
+    gcm $comment
     gpu
 }
 
 Calc () {
-    python -c "from math import *  ; print ""${*}"" " ;
+    python -c "from math import *  ; print "${*}" " ;
 }
 
-tarit () {
-    tar -czf "$1".tar.gz "$1";
-}
 
 snow () {
-        clear;while :;do echo $LINES $COLUMNS $(($RANDOM%$COLUMNS));sleep 0.1;done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
+        clear;
+        while :; do 
+            echo $LINES $COLUMNS $(($RANDOM%$COLUMNS));
+            sleep 0.1;
+            done|gawk '{a[$3]=0;for(x in a) {o=a[x];a[x]=a[x]+1;printf "\033[%s;%sH ",o,x;printf "\033[%s;%sH*\033[0;0H",a[x],x;}}'
 }
 
 cmdHist () {
-    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a; }' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
+    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a; }' \
+    | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
 #Following code is copied from ::-
