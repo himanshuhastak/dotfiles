@@ -22,7 +22,7 @@ export FIGNORE=".swp:~"
 function __prompt_command() {
     shopt -s promptvars                                                                             # prompt strings undergo parameter expansion, command substitution, arithmetic expansion, and quote removal after being expanded
 #Colors !
-    local red="\[\033[1;31m\]"
+        local red="\[\033[1;31m\]"
         local green="\[\033[0;92m\]"
         local yellow="\[\033[0;33m\]"
         local blue="\[\033[1;34m\]"
@@ -32,21 +32,21 @@ function __prompt_command() {
         local colorOff="\[\033[0m\]" 
         EXIT="$?"                                                                                   # exit status of last command
         PS1=""
-        #debian chroot stuff (take it or leave it)
+#debian chroot stuff (take it or leave it)
         PS1+="${debian_chroot:+($debian_chroot)}"
-        #based on return status either display Red/Green username
+#based on return status either display Red/Green username
         if [ $EXIT -eq 0 ]; then
             PS1+="$green\h$colorOff"
         else
             PS1+="$red\h$colorOff"
-        fi
-        #Display working Dir
-        PS1+="$magenta:\w$colorOff"
-        # prompt $ or # for root
-        PS1+="\$ "
-        #PS2=">"
-        #PS3
-        #PS4
+                fi
+#Display working Dir
+                PS1+="$magenta:\w$colorOff"
+# prompt $ or # for root
+                PS1+="\$ "
+#PS2=">"
+#PS3
+#PS4
 }
 PROMPT_COMMAND=__prompt_command
 
@@ -69,8 +69,28 @@ bind     '"^[p~": history-search-backward'                                      
 #    . ~/.bash_aliases
 #fi
 
+
+#### SHELL BUILTIN
+# set
+# set -o allexport      # set -a
+set -o notify           # set -b                                                                    # Cause the status of terminated background jobs to be reported immediately
+set -o histexpand       # set -H                                                                    # History substitution using !
+set -o noclobber        # set -C                                                                     # Prevent output redirection using from overwriting existing files.  
+#set -o noexec          # set -n                                                                    #Read commands but do not execute them
+set -o monitor          # set -m                                                                    # All processes run in a separate process group
+set -o history
+set -o nounset          # set -u
+#set -o verbose         # set -v
+#set -o xtrace          # set -x
+#set -o braceexpand     # set -B
+#set -o errexit         # set -e
+#set -o errtrace        # set -E
+#set -o functrace       # set -T
+#set -o vi
+
 #SHELL OPTS                                                                                         # Read bash man
 shopt -s autocd                                                                                     
+shopt -s cdable_vars
 shopt -s cdspell                                                                                    
 shopt -s checkjobs                                                                                  
 shopt -s cmdhist                                                                                    
