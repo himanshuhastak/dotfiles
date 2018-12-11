@@ -5,18 +5,22 @@ stty sane
 
 bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
 bind 'set show-all-if-ambiguous on'
+bind 'set match-hidden-files off'
+bind 'set visible-stats on'
+bind 'set completion-query-items 150'
 
 #BASH VARIABLES
 export EDITOR='gvim'                                                                                # gvim as default editor
-export HISTCONTROL=ignoredups                                                                       # avoid succesive duplicates in the bash command history
+export HISTCONTROL=ignoredups:ignorespace                                                           # avoid succesive duplicates in the bash command history
 export HISTFILE=~/.bash_history
 export HISTFILESIZE=5000
-export HISTIGNORE="ls:[bf]g:exit:pwd:clear:cd ..:cd .:s:g:exit:tmux:cat:ll:set:shopt:"
+export HISTIGNORE="ls:[bf]g:exit:pwd:clear:cd ..:cd .:s:g:exit:tmux:cat:ll:set:shopt:#set :shopt -s:"
 export HISTSIZE=-1
 export CDPATH="~:~/Documents:~/GIT"
 export PATH=".:${PATH}"
 export GLOBINORE=
 export FIGNORE=".swp:~:.org"
+export IGNOREEOF=1                                                                                  # prevent accidental exit with Ctrl-D
 
 
 function __prompt_command() {
@@ -39,17 +43,16 @@ function __prompt_command() {
             PS1+="$green\h$colorOff"
         else
             PS1+="$red\h$colorOff"
-                fi
+        fi
 #Display working Dir
                 PS1+="$magenta:\w$colorOff"
 # prompt $ or # for root
                 PS1+="\$ "
-#PS2=">"
-#PS3
-#PS4
 }
-PROMPT_COMMAND=__prompt_command
+PROMPT_COMMAND="history -a ; __prompt_command "
 
+export PS2='>'
+export PS4='+$BASH_SOURCE:$LINENO:$FUNCNAME: '
 #BIND KEYS
 bind     '"^[[1;5D" backward-word'
 bind     '"^[[1;5C" forward-word'
@@ -59,7 +62,11 @@ bind     '"\e[2~"   overwrite-mode'                                             
 bind     '"\e[3~"   delete-char'                                                                    # Delete
 bind     '"\e[4~"   end-of-line'                                                                    # End
 bind     '"\e[8~"   end-of-line'                                                                    # End rxvt
-bind     '"^[p~": history-search-backward'                                                          # TCSH equivalent history search
+#bind     '"^[p~": history-search-backward`'                                                          # TCSH equivalent history search
+bind     '"\e[A": history-search-backward'
+bind     '"\e[B": history-search-forward'
+bind     '"\M-s": menu-complete'
+bind     space:magic-space
 
 #ALIASES
 # shellcheck source=$HOME                                                                           # disable relative paths
@@ -93,6 +100,7 @@ shopt -s autocd
 shopt -s cdable_vars
 shopt -s cdspell                                                                                    
 shopt -s checkjobs                                                                                  
+shopt -s checkwinsize
 shopt -s cmdhist                                                                                    
 shopt -s direxpand                                                                                  
 shopt -s dirspell                                                                                   
