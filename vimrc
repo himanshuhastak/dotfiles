@@ -10,8 +10,8 @@ set autoread                											" automatically read file that has been c
 set autochdir               											" automatically change the current Dir
 set backspace=indent,eol,start  										" make backspace work
 "set relativenumber         											" set relative numbering
-set backup
-set backupext=.org
+"set backup
+"set backupext=.org
 
 "GVIM DIFF 
 if &diff
@@ -209,6 +209,7 @@ colorscheme default
 filetype on
 filetype plugin on
 filetype indent on          											" automatic, language-dependent indentation, syntax coloring and other functionality
+let do_syntax_sel_menu=1
 
 "############################################################ PluginInstall Krishna #################################################################"
 
