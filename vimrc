@@ -171,6 +171,11 @@ set noswapfile                                                           " no sw
 "nnoremap <F1> <ESC>
 "vnoremap <F1> <ESC>
 
+"Make backspace work in vim
+inoremap BS <^H>
+nnoremap BS <^H>
+vnoremap BS <^H>
+
 inoremap ( ()<Esc>i
 inoremap < <><Esc>i
 inoremap { {}<Esc>i
