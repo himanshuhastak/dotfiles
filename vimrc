@@ -28,7 +28,9 @@ set smartcase
 set incsearch               											" incremental search:search when you type
 set hlsearch                											" highlite search pattern
 set showmatch               											" show matching brackets
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta       " highlites
+hi MatchParen cterm=bold ctermbg=none ctermfg=Red               " hls color 
+"hi Search ctermbg=LightYellow
+"hi Search ctermfg=Red
 
 "COMPLETION MENU
 set completeopt=longest,menuone 										" popup menu doesn't select the first completion item, but rather just inserts the longest common text of all matches
