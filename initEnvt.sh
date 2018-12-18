@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 ln -nfs ~/GIT/dotfiles/bash_aliases        ~/.bash_aliases
 ln -nfs ~/GIT/dotfiles/bashrc.hastakh      ~/.bashrc.hastakh
