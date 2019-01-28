@@ -16,8 +16,8 @@ set noerrorbells
 "let mapleader=","                                                     " leader is comma instead of \
 
 "FORMAT OPRIONS
-set formatoptions=qrn1
-set formatoptions-=t
+set formatoptions=qtn1
+set formatoptions-=r
 set encoding=utf-8          											" UTF-8 text encoding by default
 set t_Co=256                                                            " enable 256 colors
 set termguicolors
@@ -29,8 +29,8 @@ set ruler                   											" display current cursor position in lowe
 set cursorcolumn            											" highlite current column
 set cursorline             											    " highlite current row
 set scrolloff=3             											" option determines the number of context lines you would like to see above and below the cursor.
-set sidescrolloff=15             										" scroll horizontall 
-set lazyredraw                                                          " redraw only when we need to. 
+set sidescrolloff=15             										" scroll horizontall
+set lazyredraw                                                          " redraw only when we need to.
 "set list                   											" end of lines show as '$' and carriage returns usually show as '^M'
 "set listchars=tab:▶\
 "set listchars+=eol:$
@@ -83,7 +83,7 @@ set linebreak
 if has('linebreak')
     set showbreak=->
 endif
-nnoremap <F6> gg=G                  									" Indent all file
+nnoremap    <F6>        gg=G                  							" Indent all file
 
 "FOLDING
 set foldenable                                                          " fold by default
@@ -94,7 +94,7 @@ set foldlevelstart=10           										" fold for all files
 set foldlevel=12
 set foldnestmax=12
 "set foldcolumn=12
-nnoremap <space> za            										    " map space to toggle fold
+nnoremap    <space>     za            								    " map space to toggle fold
 
 "WINDOW MANAGEMENT
 if has('windows')
@@ -114,8 +114,8 @@ set statusline +=%<%F%*                                                 " full p
 set statusline +=%<%F%*                                                 " full path
 set statusline +=%*%m%*                                                 " modified flag
 set statusline +=%1*%=%5l%*                                             " current line
-"set statusline +=%2*/%L%*                                              " total lines
-set statusline +=%1*/%4v\ %*                                            " virtual column number
+set statusline +=%2*/%L%*                                               " total lines
+set statusline +=%1*%4v\ %*                                            " virtual column number
 
 "MISC.
 set hidden                  											" hide buffers instead of closing them
@@ -178,105 +178,86 @@ au BufNewFile,BufRead *.sv,*.vpp,*.svh,*.vh,*.v so ~/.vim/syntax/verilog_systemv
 "################################## MAPPINGS ####################################
 
 "DISBALE ARROW KEYS
-"noremap <Up> <NOP>
-"noremap <Down> <NOP>
-"noremap <Left> <NOP>
-"noremap <Right> <NOP>
+"noremap    <Up>    <NOP>
+"noremap    <Down>  <NOP>
+"noremap    <Left>  <NOP>
+"noremap    <Right> <NOP>
 "
 " move vertically by visual line"
-nnoremap j gj
-nnoremap k gk
+nnoremap    j       gj
+nnoremap    k       gk
 
 " move to beginning/end of line
-nnoremap B ^
-nnoremap E $
+nnoremap    B       ^
+nnoremap    E       $
 
 " highlight last inserted text
-nnoremap gV `[v`]
+nnoremap    gV      `[v`]
 
 " jk is escape
-inoremap jk <esc>
-
+inoremap    jk      <esc>
 
 "DISABLE HELP
-"inoremap <F1> <ESC>
-"nnoremap <F1> <ESC>
-"vnoremap <F1> <ESC>
+"inoremap   <F1>    <ESC>
+"nnoremap   <F1>    <ESC>
+"vnoremap   <F1>    <ESC>
 
 "MAKE BACKSPACE WORK IN VIM
-inoremap BS <^H>
-nnoremap BS <^H>
-vnoremap BS <^H>
+inoremap    BS      <^H>
+nnoremap    BS      <^H>
+vnoremap    BS      <^H>
 
-inoremap ( ()<Esc>i
-inoremap < <><Esc>i
-inoremap { {}<Esc>i
-inoremap [ []<Esc>i
-inoremap " ""<Esc>i
-inoremap ' ''<Esc>i
-inoremap ` ``<Esc>i
+inoremap    (       ()<Esc>i
+inoremap    <       <><Esc>i
+inoremap    {       {}<Esc>i
+inoremap    [       []<Esc>i
+inoremap    "       ""<Esc>i
+inoremap    '       ''<Esc>i
+inoremap    `       ``<Esc>i
 
 "WINDOW NAVIGATION
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
+nnoremap    <C-j>   <C-w>j
+nnoremap    <C-k>   <C-w>k
+nnoremap    <C-h>   <C-w>h
+nnoremap    <C-l>   <C-w>l
 
 "################################## HIGHLIGHTS ####################################
 
-hi MatchParen ctermfg=Blue guifg=Blue       " cterm=Bold gui=Bold
-hi Search ctermbg=Yellow ctermfg=Red guibg=Yellow guifg=Red      " cterm=Bold gui=Bold
-highlight Comment cterm=italic gui=italic   " ctermfg=Blue guifg=Blue
-highlight ColorColumn ctermbg=Gray guibg=grey95
-highlight Cursor cterm=Bold gui=Bold
-hi CursorLine guibg=grey97 ctermbg=LightGrey
-hi CursorColumn guibg=grey97 ctermbg=LightGrey
-hi Directory cterm=Bold gui=Bold
-hi ErrorMsg ctermbg=Red guibg=Red cterm=Bold gui=Bold
-hi WarningMsg cterm=Bold gui=Bold ctermbg=DarkYellow guibg=DarkYellow
-hi Folded cterm=Bold gui=Bold ctermbg=Grey guibg=Grey
-highlight NonText cterm=Bold gui=Bold
-highlight Constant cterm=Bold gui=Bold
-highlight SpecialKey cterm=Bold gui=Bold
-"hi SpellBad cterm=Bold gui=Bold
-"hi SpellCap cterm=Bold gui=Bold
-"hi LineNr cterm=Bold gui=Bold
-"hi Title cterm=Bold gui=Bold
+hi MatchParen       ctermfg=Blue                    guifg=Blue
+hi Search           ctermbg=Yellow ctermfg=Red      guibg=Yellow guifg=Red
+hi Comment          cterm=italic                    gui=italic
+hi ColorColumn      ctermbg=Gray                    guibg=grey95
+hi Cursor           cterm=Bold                      gui=Bold
+hi CursorLine       ctermbg=LightGrey               guibg=grey97
+hi CursorColumn     ctermbg=LightGrey               guibg=grey97
+hi Directory        cterm=Bold                      gui=Bold
+hi ErrorMsg         ctermbg=Red cterm=Bold          guibg=Red gui=Bold
+hi WarningMsg       cterm=Bold ctermbg=DarkYellow   guibg=DarkYellow gui=Bold
+hi Folded           cterm=Bold ctermbg=Grey         gui=Bold guibg=Grey
+hi NonText          cterm=Bold                      gui=Bold
+hi Constant         cterm=Bold,italic                      gui=Bold,italic
+hi SpecialKey       cterm=Bold                      gui=Bold
+"hi SpellBad        cterm=Bold                      gui=Bold
+"hi SpellCap        cterm=Bold                      gui=Bold
 
 " highlight extra whitespaces
-highlight ExtraWhitespace ctermbg=Brown guibg=Brown
+hi ExtraWhitespace  ctermbg=Brown                    guibg=Brown
 match ExtraWhitespace /\s\+$/
 "
 "GUI fg/bg COLORS
-"highlight Normal guibg=lightyellow
-"highlight Normal guibg=grey90
+"highlight Normal                                   guibg=lightyellow
+"highlight Normal                                   guibg=grey90
 
 "STATUS LINE COLORS
-hi User1 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User2 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User3 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User4 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User5 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User6 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User7 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User8 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-hi User9 ctermfg=Gray ctermbg=Black guifg=#eea040 guibg=Black
-
-"################################## AUTOGROUPS ####################################
-
-augroup configgroup
-    autocmd!
-    autocmd VimEnter * highlight clear SignColumn
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.sh,*.c,*.cc,*.cpp
-                \:call <SID>StripTrailingWhitespaces()
-    autocmd FileType python setlocal commentstring=#\ %s
-    autocmd BufEnter Makefile setlocal noexpandtab
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
-    "SYNTAX HIGHLIGHTING FOR TRACE FILES
-    au BufRead,BufNewFile *.trc so ~/trc.vim
-augroup END
+hi User1            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User2            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User3            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User4            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User5            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User6            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User7            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User8            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
+hi User9            ctermfg=Gray ctermbg=Black      guifg=#eea040 guibg=Black
 
 "################################## FUNCTIONS ####################################
 
@@ -304,18 +285,32 @@ endfunc
 " These need vim-go plugin
 function! <SID>RunFile()
     let ext = expand("%:e")
-    if(ext == "go") 
+    if(ext == "go")
         :GoRun
     endif
 endfunc
 
 function! <SID>BuildFile()
     let ext = expand("%:e")
-    if(ext == "go") 
+    if(ext == "go")
         :GoBuild
     endif
 endfunc
 
+"################################## AUTOGROUPS ####################################
+
+augroup configgroup
+    autocmd!
+    autocmd VimEnter    *           highlight clear SignColumn
+    autocmd VimEnter    *           :call <SID>StripTrailingWhitespaces()                           " remove trailing spaces before opening any file
+    "autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.sh,*.c,*.cc,*.cpp  \
+    "                                :call <SID>StripTrailingWhitespaces()                          " remove trailing spaces before writing these files
+    autocmd FileType    python      setlocal commentstring=#\ %s
+    autocmd BufEnter    Makefile    setlocal noexpandtab
+    "autocmd BufEnter *.sh setlocal softtabstop=2
+    "SYNTAX HIGHLIGHTING FOR TRACE FILES
+    au BufRead,BufNewFile   *.trc     so ~/trc.vim
+augroup END
 
 "################################## PLUGINS ####################################
 "VUNDLE
@@ -408,4 +403,3 @@ if has('gui_running')
     set guitablabel
     set fillchars+=vert:│"
 endif
-
