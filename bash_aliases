@@ -37,7 +37,6 @@ alias grm='git rm'
 alias gcm='git commit -m'
 alias gpu='git push -u origin master'
 
-
 #FUNCTIONS
 mkcd () {
     mkdir "${1}"
@@ -51,6 +50,13 @@ GIT () {
         ga "$file" ;
     gcm "$comment"
         gpu
+}
+
+# force git pull --- similar to p4 sync -f
+FGPULL () {
+    local branch=${1:-master}
+    git fetch --all
+    git reset --hard origin/$branch
 }
 
 Calc () {
