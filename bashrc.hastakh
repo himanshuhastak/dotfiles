@@ -12,10 +12,10 @@ bind 'set completion-query-items 150'
 #BASH VARIABLES
 export EDITOR='gvim'                                                                                # gvim as default editor
 export HISTCONTROL=ignoredups:ignorespace                                                           # avoid succesive duplicates in the bash command history
-export HISTFILE=~/.bash_history
+#export HISTFILE=~/.bash_history
 export HISTFILESIZE=5000
 export HISTIGNORE="ls:[bf]g:exit:pwd:clear:cd ..:cd .:s:g:exit:tmux:cat:ll:set:shopt:#set :shopt -s:"
-export HISTSIZE=-1
+export HISTSIZE=1000
 export CDPATH="~:~/Documents:~/GIT"
 export PATH=".:${PATH}"
 export GLOBINORE=
@@ -101,6 +101,23 @@ shopt -s cdable_vars
 shopt -s cdspell
 shopt -s checkjobs
 shopt -s checkwinsize
+<<<<<<< HEAD
+shopt -s cmdhist                                                                                    
+#shopt -s direxpand                                                                                  
+shopt -s dirspell                                                                                   
+shopt -s dotglob                                                                                   
+shopt -s expand_aliases                                                                             
+shopt -s extglob                                                                                    
+shopt -s extquote
+shopt -s histappend                                                                                 
+shopt -s interactive_comments                                                                       
+shopt -s nocaseglob                                                                                 
+shopt -s nocasematch                                                                                
+shopt -s globstar                                                                                   
+shopt -s no_empty_cmd_completion                                                                    
+shopt -s sourcepath                                                                                   
+#shopt -s complete_fullquote
+=======
 shopt -s cmdhist
 shopt -s direxpand
 shopt -s dirspell
@@ -116,4 +133,5 @@ shopt -s globstar
 shopt -s no_empty_cmd_completion
 shopt -s sourcepath
 shopt -s complete_fullquote
+>>>>>>> 198f4d9189f7c2d670638568b2e91a3efab2ff28
 
