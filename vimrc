@@ -353,6 +353,16 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+"let g:syntastic_c_no_default_include_dirs=1   " disable default includes
+let g:syntastic_c_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include']
+"let g:syntastic_cpp_no_default_include_dirs=1   " disable default includes
+let g:syntastic_cpp_auto_refresh_includes = 0
+let g:syntastic_cpp_remove_include_errors = 0
+let g:syntastic_cpp_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include' , '-I./TESTBENCH/INC' , '-I./TESTBENCH/INC/NSIM_HOME', '-I./TESTBENCH/INC/ZEBU_IP_ROOT' , '-I./TESTBENCH/INC/ZEBU_ROOT/' ]
+let g:syntastic_cpp_compiler_options = ' -std=c++11'
+"let g:syntastic_cpp_compiler = 'clang++'           " use default g++
+
+
 
 " CtrlP settings
 let g:ctrlp_match_window = 'bottom,order:ttb'
@@ -400,6 +410,6 @@ if has('gui_running')
     "set guioptions-=b
     "set go+=m                                                          " display the menu bar
     set guipty                                                          " pseudo tty for :! command
-    set guitablabel
+    "set guitablabel
     set fillchars+=vert:│"
 endif
