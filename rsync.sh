@@ -27,7 +27,7 @@ RSYNC_SKIP_COMPRESS="3fr/3g2/3gp/3gpp/7z/aac/ace/amr/apk/appx/appxbundle/arc/arj
 RSYNC_ARGS="-ralHAXxvutz --human-readable --no-motd --numeric-ids -P --log-file=.rsynclog " # even if we pass z; we are skipping compression on few files formats
 
 # Speed of ciphers: (from faster ones to slower ones):: arcfour >> blowfish >> aes >> 3des
-SSH_CIPHER=aes128-ctr
 SSH_CIPHER=arcfour              ## Seems there are security concerns with arcfour, use only at trusted locations
+SSH_CIPHER=aes128-ctr
 
 time  eval rsync "$RSYNC_ARGS" --skip-compress="$RSYNC_SKIP_COMPRESS"  -e \"ssh -T -c $SSH_CIPHER -o Compression=no -x \" "$*"
