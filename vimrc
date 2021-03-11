@@ -20,7 +20,7 @@ set formatoptions=qtn1
 set formatoptions-=r
 set encoding=utf-8          											" UTF-8 text encoding by default
 set t_Co=256                                                            " enable 256 colors
-set termguicolors
+" set termguicolors
 set fileformat=unix
 "set spell spelllang=en_us
 
@@ -72,7 +72,7 @@ set smarttab                											" insert insert tabs/spaces to go to next
 set wrap
 set wrapmargin=2            											" turn off physical insertion of lines
 set textwidth=100           											" automatically wrap after 150 cols
-set colorcolumn=100
+" set colorcolumn=100
 
 "INDENTATION
 set autoindent
@@ -133,18 +133,18 @@ set tag=tags
 if !isdirectory($HOME."/.vim/.undo-dir")
     call mkdir($HOME."/.vim/.undo-dir","", 0700)
 endif
-set undodir=~/.vim/.undo-dir//
+" set undodir=~/.vim/.undo-dir//
 set history=100
 set undolevels=100
-set undofile
+" set undofile
 
 "BACKUP
 if !isdirectory($HOME."/.vim/.backup-dir")
     call mkdir($HOME."/.vim/.backup-dir","", 0700)
     call mkdir($HOME."/.vim/.backupskip-dir","", 0700)
 endif
-set backupdir=~/.vim/.backup-dir//
-set backupskip=~/.vim/.backupskip-dir//
+set backupdir=~/.vim/.backup-dir/
+set backupskip=~/.vim/.backupskip-dir/
 set backup
 set writebackup
 set backupext=.org
@@ -154,7 +154,7 @@ set backupext=.org
 if !isdirectory($HOME."/.vim/.swp-dir")
     call mkdir($HOME."/.vim/.swp-dir","", 0700)
 endif
-set directory=~/.vim/.swp-dir//
+set directory=~/.vim/.swp-dir/
 set swapfile
 
 " FINDING FILES
@@ -312,70 +312,70 @@ augroup configgroup
     au BufRead,BufNewFile   *.trc     so ~/trc.vim
 augroup END
 
-"################################## PLUGINS ####################################
-"VUNDLE
-
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim           							" set the runtime path to include Vundle and initialize
-
-call vundle#begin()         		    							    " a path where Vundle should install plugins
-Plugin 'VundleVim/Vundle.vim'               							" let Vundle manage Vundle, required
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'godlygeek/tabular.git'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/syntastic'
-Plugin 'Rykka/riv.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'fatih/vim-go'
-"Plugin 'nathanaelkane/vim-indent-guides'
-
-"NERDTree
-let NERDTreeQuitOnOpen=0
-"let g:NERDTreeDirArrowExpandable = '▸'
-"let g:NERDTreeDirArrowCollapsible = '▾'
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 0
-let NERDTreeAutoDeleteBuffer = 1
-"autocmd vimentre * NERDTree
-
-"Tagbar
-let g:tagbar_ctags_bin = "ctags"
-let g:tagbar_show_visibility = 1
-let g:tagbar_autofocus = 0
-
-"Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-"let g:syntastic_c_no_default_include_dirs=1   " disable default includes
-let g:syntastic_c_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include']
-"let g:syntastic_cpp_no_default_include_dirs=1   " disable default includes
-let g:syntastic_cpp_auto_refresh_includes = 0
-let g:syntastic_cpp_remove_include_errors = 0
-let g:syntastic_cpp_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include' , '-I./TESTBENCH/INC' , '-I./TESTBENCH/INC/NSIM_HOME', '-I./TESTBENCH/INC/ZEBU_IP_ROOT' , '-I./TESTBENCH/INC/ZEBU_ROOT/' ]
-let g:syntastic_cpp_compiler_options = ' -std=c++11'
-"let g:syntastic_cpp_compiler = 'clang++'           " use default g++
-
-
-
-" CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-"let g:ctrlp_user_command = 'find %s -type f'
-
-call vundle#end()            " required
+""################################## PLUGINS ####################################
+""VUNDLE
+"
+"filetype off
+"set rtp+=~/.vim/bundle/Vundle.vim           							" set the runtime path to include Vundle and initialize
+"
+"call vundle#begin()         		    							    " a path where Vundle should install plugins
+"Plugin 'VundleVim/Vundle.vim'               							" let Vundle manage Vundle, required
+"Plugin 'scrooloose/nerdtree'
+"Plugin 'Xuyuanp/nerdtree-git-plugin'
+"Plugin 'godlygeek/tabular.git'
+"Plugin 'majutsushi/tagbar'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'Rykka/riv.vim'
+"Plugin 'kien/ctrlp.vim'
+"Plugin 'fatih/vim-go'
+""Plugin 'nathanaelkane/vim-indent-guides'
+"
+""NERDTree
+"let NERDTreeQuitOnOpen=0
+""let g:NERDTreeDirArrowExpandable = '▸'
+""let g:NERDTreeDirArrowCollapsible = '▾'
+"let NERDTreeMinimalUI = 1
+"let NERDTreeDirArrows = 0
+"let NERDTreeAutoDeleteBuffer = 1
+""autocmd vimentre * NERDTree
+"
+""Tagbar
+"let g:tagbar_ctags_bin = "ctags"
+"let g:tagbar_show_visibility = 1
+"let g:tagbar_autofocus = 0
+"
+""Syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+""let g:syntastic_c_no_default_include_dirs=1   " disable default includes
+"let g:syntastic_c_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include']
+""let g:syntastic_cpp_no_default_include_dirs=1   " disable default includes
+"let g:syntastic_cpp_auto_refresh_includes = 0
+"let g:syntastic_cpp_remove_include_errors = 0
+"let g:syntastic_cpp_include_dirs = [ '-I.',' -I..',' -Iinclude ',' -Iincludes',' -I../include ',' -I../includes', '../include', 'include' , '-I./TESTBENCH/INC' , '-I./TESTBENCH/INC/NSIM_HOME', '-I./TESTBENCH/INC/ZEBU_IP_ROOT' , '-I./TESTBENCH/INC/ZEBU_ROOT/' ]
+"let g:syntastic_cpp_compiler_options = ' -std=c++11'
+""let g:syntastic_cpp_compiler = 'clang++'           " use default g++
+"
+"
+"
+"" CtrlP settings
+"let g:ctrlp_match_window = 'bottom,order:ttb'
+"let g:ctrlp_switch_buffer = 0
+"let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+""let g:ctrlp_user_command = 'find %s -type f'
+"
+"call vundle#end()            " required
 
 "COLORSCHEME
 "colorscheme solarized
-"colorscheme default
+colorscheme default
 
 " call  "filetype plugin on" after pulgins are done
 "ENABLE FILETYPES
