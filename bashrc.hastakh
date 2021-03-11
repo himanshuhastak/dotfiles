@@ -1,7 +1,8 @@
+#!/bin/bash
 # shellcheck shell=bash
 
-bind 'set completion-ignore-case on'                                                                # tab-autocomplete case-insensitive
-bind 'set show-all-if-ambiguous on'
+# bind 'set completion-ignore-case on' # tab-autocomplete case-insensitive
+# bind 'set show-all-if-ambiguous on'
 # bind 'set match-hidden-files off'
 # bind 'set visible-stats on'
 # bind 'set completion-query-items 150'
@@ -14,51 +15,49 @@ alias vncserver="vncserver :11"
 # alias tao='task add project:office'
 alias grep="egrep -n"
 
-function setenv () {
-export "$1=$2"
+setenv() {
+    export "$1=$2"
 }
 
 function date_ist() {
-TZ=Asia/Calcutta date
-#date
+    TZ=Asia/Calcutta date
+    #date
 }
-FGPULL () {
+FGPULL() {
     local branch=${1:-master}
     git fetch --all
     git reset --hard origin/$branch
 }
 
-Calc () {
+Calc() {
     local what="$*"
     echo ""
-    python3 -c "from math import *  ; print(f'{$what}') " ;
-    python3 -c "from math import *  ; print(f'{$what:,}') " ;
+    python3 -c "from math import *  ; print(f'{$what}') "
+    python3 -c "from math import *  ; print(f'{$what:,}') "
     echo ""
-    python3 -c "from math import *  ; print(f'{$what:X}') " ;
-    python3 -c "from math import *  ; print(f'{$what:_X}') " ;
+    python3 -c "from math import *  ; print(f'{$what:X}') "
+    python3 -c "from math import *  ; print(f'{$what:_X}') "
     echo ""
-    python3 -c "from math import *  ; print(f'{$what:b}') " ;
-    python3 -c "from math import *  ; print(f'{$what:_b}') " ;
+    python3 -c "from math import *  ; print(f'{$what:b}') "
+    python3 -c "from math import *  ; print(f'{$what:_b}') "
 }
-
-
 
 prepend() {
     local var=$1
     local val=$2
     local sep=${3:-":"}
-    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return                                                                         # already present
-    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; }                                                                  # empty
-    printf -v "$var" '%s%s%s' "$val" "$sep" "${!var}"                                                                             # prepend
+    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return        # already present
+    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
+    printf -v "$var" '%s%s%s' "$val" "$sep" "${!var}"            # prepend
 }
 
 append() {
     local var=$1
     local val=$2
     local sep=${3:-":"}
-    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return                                                                         # already present
-    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; }                                                                  # empty
-    printf -v "$var" '%s%s%s' "${!var}" "$sep" "${val}"                                                                           # append
+    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return        # already present
+    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
+    printf -v "$var" '%s%s%s' "${!var}" "$sep" "${val}"          # append
 }
 
 remove() {
@@ -66,34 +65,32 @@ remove() {
     local val=$2
     local sep=${3:-":"}
     while [[ ${!var} =~ (^|.*"$sep")"$val"($|"$sep".*) ]]; do
-        if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then                                                                     # match is between both leading and trailing content
+        if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then # match is between both leading and trailing content
             printf -v "$var" '%s%s' "${BASH_REMATCH[1]%$sep}" "${BASH_REMATCH[2]}"
-        elif [[ ${BASH_REMATCH[1]} ]]; then                                                                                         # match is at the end
+        elif [[ ${BASH_REMATCH[1]} ]]; then # match is at the end
             printf -v "$var" "${BASH_REMATCH[1]%$sep}"
-        else                                                                                                                        # match is at the beginning
+        else # match is at the beginning
             printf -v "$var" "${BASH_REMATCH[2]#$sep}"
         fi
     done
 }
 
-connectTmux() {
-    if ! tmux has-session -t $USER 2> /dev/null ; then
-        tmux rename-session $USER
-    fi
-    if ! [[ $(tmux display-message -p '#S') == $USER ]] ; then
-        tmux switch-client -t $USER
-        tmux kill-session -a -t $USER
-    fi
-    if tmux has-session -t $USER 2> /dev/null ; then
-        # tmux attach-session -t $USER
-        :
-    fi
-}
+# connectTmux() {
+#     if ! tmux has-session -t $USER 2>/dev/null; then
+#         tmux new-session -s $USER
+#     else
+#         tmux rename-session $USER
+#     fi
+#     if ! [[ $(tmux display-message -p '#S') == $USER ]]; then
+#         tmux switch-client -t $USER
+#         tmux kill-session -a -t $USER
+#     fi
+# }
+#
+# createOrConnectTmux() {
+#     connectTmux || tmux new-session -s $USER
+# }
 
-createOrConnectTmux() {
-    connectTmux || tmux new-session -s $USER
-}
-
-WORK=snps
-. ~/.bashrc.snps.hastakh
-createOrConnectTmux;
+# WORK=snps
+# source ~/.bashrc.snps.hastakh
+# createOrConnectTmux;
