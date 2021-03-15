@@ -309,8 +309,15 @@ augroup configgroup
     autocmd BufEnter    Makefile    setlocal noexpandtab
     "autocmd BufEnter *.sh setlocal softtabstop=2
     "SYNTAX HIGHLIGHTING FOR TRACE FILES
-    au BufRead,BufNewFile   *.trc     so ~/trc.vim
+    au BufRead,BufNewFile   *.trc     so $UTILS_HOME/verif/vim
 augroup END
+let fts = ['trc', 'trace', 'dump', 'dmp', 'hex']
+if index(fts, &filetype) == -1
+    set noswapfile                                                           " no swap files ; we are saving very often anyways
+    set nobackup                                                            " no backup files
+    set nowritebackup                                                       " only in case you don't want a backup file while editing
+    "set noundofile                                                          " no undofile
+endif
 
 ""################################## PLUGINS ####################################
 ""VUNDLE
