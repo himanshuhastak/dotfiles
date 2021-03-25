@@ -96,3 +96,4 @@ remove() {
 # createOrConnectTmux;
 prepend PATH ~/bin
 # export PATH=~/bin:$PATH
+alias less="less -N -i -M -FsRXc -w  "

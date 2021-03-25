@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-# Set Session Name
-SESSION="$USER"
-SESSIONEXISTS=$(tmux list-sessions | grep $SESSION)
+# Session Name
+SESSION=$USER
+SESSIONEXISTS=$(tmux list-sessions | grep $USER)
 
 # Only create tmux session if it doesn't already exist
 if [ "$SESSIONEXISTS" = "" ]
@@ -15,10 +15,13 @@ then
     tmux send-keys -t 'ru20' 'ssh -Yt ru20-hw-linux125' C-m 'bash' C-m
 
     tmux new-window -t $SESSION:2 -n 'de02'
-    tmux send-keys -t 'de02' 'ssh -Yt hastakh@de02arcssv-zs3-01' C-m # Switch to bind script?
+    tmux send-keys -t 'de02' 'ssh -Yt hastakh@de02arcssv-zs3-01' C-m
 
-    tmux new-window -t $SESSION:3 -n 'us01'
-    tmux send-keys -t 'us01' 'clear' C-m # Switch to bind script?
+    tmux new-window -t $SESSION:3 -n 'arcdev'
+    tmux send-keys -t 'arcdev6' 'ssh -Yt hastakh@de02arcssv-zs3-01' C-m
+
+    tmux new-window -t $SESSION:4 -n 'us01'
+    tmux send-keys -t 'us01' 'clear' C-m
 
     # tmux select-pane -t 1
 
