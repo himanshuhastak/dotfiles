@@ -71,7 +71,7 @@ set smarttab                											" insert insert tabs/spaces to go to next
 "WRAP
 set wrap
 set wrapmargin=2            											" turn off physical insertion of lines
-set textwidth=100           											" automatically wrap after 150 cols
+"set textwidth=100           											" automatically wrap after 150 cols
 " set colorcolumn=100
 
 "INDENTATION
