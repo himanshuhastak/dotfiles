@@ -72,18 +72,7 @@ function usage() {
     echo usage:
     echo -e "\$END_UNDERLINE \$RESET"
 
-    grep "[[:space:]].*-.*)[[:space:]].*" "\$FILE" | \\
-    sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
-}
-
-
-function getOptsOptions() {
-
-    # single colon ':' means that it argument is required.
-    export SHORTOPTS="f:a:h"
-    export LONGOPTS_WITH_ARG="file-name:,action:"
-    export LONGOPTS_WITHOUT_ARG="help"
-
+    grep "[[:space:]].*-.*)[[:space:]].*" "\$FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
 }
 
 
@@ -119,6 +108,15 @@ function colors() {
     export END_UNDERLINE
     export BOLD
     export RESET
+
+}
+
+function getOptsOptions() {
+
+    # single colon ':' means that it argument is required.
+    export SHORTOPTS="f:a:h"
+    export LONGOPTS_WITH_ARG="file-name:,action:"
+    export LONGOPTS_WITHOUT_ARG="help"
 
 }
 
@@ -204,7 +202,6 @@ function getOpt() {
 
 }
 
-
 # _getOptCompletion() {
 # 
 #     getOptsOptions ## Call function
@@ -229,7 +226,6 @@ function getOpt() {
 # 
 #     return 0
 # }
-
 
 
 function main() {
