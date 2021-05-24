@@ -53,7 +53,7 @@ function displayTime {
     [[ $D -gt 0 ]] && printf '%d days ' $D
     [[ $H -gt 0 ]] && printf '%d hours ' $H
     [[ $M -gt 0 ]] && printf '%d minutes ' $M
-    [[ $D -gt 0 || $H -gt 0 || $M -gt 0 ]] && printf 'and '
+    #[[ $D -gt 0 || $H -gt 0 || $M -gt 0 ]] && printf 'and '
     printf '%d seconds\n' $S
 }
 
@@ -81,24 +81,42 @@ function colors() {
 
 function usage() {
     colors
-    set +x
+    #set +x
     echo -e $MAGENTA $START_UNDERLINE
     echo usage:
     echo -e $END_UNDERLINE $RESET
 
     grep "[[:space:]].*-.*)[[:space:]].*" $FILE |
-        sed 's/###//g' | sed '/grep/d'
-    set +x
+        sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
+    #set +x
 }
 
+# function doErr() {
+#     echo -e "$RED $DIM [ERROR_INFO]: $RED $* $RESET" 1>&2
+#     usage
+#     exit 1
+# }
+# 
+# function doWarn() {
+#     echo -e "$YELLOW $DIM [WARNING_INFO]: $YELLOW $* $RESET" 1>&2
+# }
+
 function doErr() {
-    echo -e "$RED $DIM [ERROR_INFO]: $RED $* $RESET" 1>&2
+    echo -en "\$RED"
+    echo -en "[ERROR]: "
+    echo -en "\$RED "
+    echo -en "\$*"
+    echo -e "\$RESET" 1>&2
     usage
     exit 1
 }
 
 function doWarn() {
-    echo -e "$YELLOW $DIM [WARNING_INFO]: $YELLOW $* $RESET" 1>&2
+    echo -en "\$YELLOW"
+    echo -en "[WARNING]: "
+    echo -en "\$YELLOW "
+    echo -en "\$*"
+    echo -e "\$RESET" 1>&2
 }
 
 function getOpts_Options() {
@@ -152,16 +170,16 @@ function getOpt() {
     echo -n $RESET
 
     # # set the list of arguments equal to ${OPTS} : set them in proper order.
-    # eval set -- "$OPTS"
+    eval set -- "$OPTS"
     while true; do
         # while (( "$#" )); do
         # while [ ! -z "$1" ]; do
         case "$1" in
-        -f | --file-name) ### filename to me "action"ed upon {Required}
+        -f | --file-name) #         ### filename to me "action"ed upon {Required}
             FILE_NAME=$2
             shift 2
             ;;
-        -s | --source | --sr*) ### Source Dir of file  {Optional: Default .}
+        -s | --source | --sr*) #    ### Source Dir of file  {Optional: Default .}
             case "$2" in
             "")
                 SOURCE_DIR='.'
@@ -173,11 +191,11 @@ function getOpt() {
                 ;;
             esac
             ;;
-        -d | --destination | --des*) ### Destination Dir {Required}
+        -d | --destination | --des*) #          ### Destination Dir {Required}
             DESTINATION_DIR=$2
             shift 2
             ;;
-        -a | --action)  ### Action to be taken in file (copy/move/link/rsync) {Optional: Default: copy }
+        -a | --action) #             ### Action to be taken in file (copy/move/link/rsync) {Optional: Default: copy }
             WHAT=${2,,} # lower case
             #WHAT=${2^^} # upper case
             case "${WHAT}" in
@@ -206,7 +224,7 @@ function getOpt() {
             shift
             ;;
 
-        --) ### options after -- are not parsed {can be passed on to some script later}
+        --) #           ### options after -- are not parsed {can be passed on to some script later}
             #EXTRA_ARGS+="$1"
             break
             ;;
@@ -232,12 +250,15 @@ function getOpt() {
     UNPARSED_OPTION_COUNT="$#"
     echo $EXTRA_ARGS
     if [[ $UNPARSED_OPTION_COUNT -gt 0 ]]; then
-        # export UNPARSED_OPTION=$(echo $UNPARSED_OPTION |& sed 's/-- //g')   # reomve --
-        # export UNPARSED_OPTION_COUNT=$(echo $UNPARSED_OPTION | sed 's/ /\n/g' |  wc -l) #(can be simple -1 for the removed --)
+        # shellcheck disable=SC2001 ## See if you can use \${variable//search/replace} instead. 
+        UNPARSED_OPTION=$(echo $UNPARSED_OPTION |& sed 's/-- //g')   # reomve --
+        UNPARSED_OPTION_COUNT=$(echo $UNPARSED_OPTION | sed 's/ /\n/g' |  wc -l) #(can be simple -1 for the removed --)
+        export UNPARSED_OPTION
+        export UNPARSED_OPTION_COUNT
         doWarn "$UNPARSED_OPTION_COUNT unparsed options  : $UNPARSED_OPTION"
         ### Process the unparsed options as positional &| extra args
     fi
-    #echo $ALL_OPTS
+    echo $ALL_OPTS
 }
 
 function main() {
