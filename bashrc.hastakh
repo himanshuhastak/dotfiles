@@ -92,7 +92,6 @@ remove() {
 # }
 
 # WORK=snps
-# source ~/.bashrc.snps.hastakh
 # createOrConnectTmux;
 prepend PATH ~/bin
 # export PATH=~/bin:$PATH
