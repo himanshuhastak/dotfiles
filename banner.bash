@@ -1,4 +1,8 @@
-cat <<-EOF > new.bash
+#!/bin/bash
+
+FILE=${1:=new.bash}
+
+cat <<-EOF > $FILE
 #! /usr/bin/env bash
 # ------------------------------------------------
 # Author:       ${USER}
@@ -8,7 +12,7 @@ cat <<-EOF > new.bash
 # Modified:     $(TZ=Asia/Calcutta date)
 #
 # Usage:
-#       <script_name>.sh --help
+#       $FILE --help
 #
 # Description:
 #           {what does script do}
@@ -23,18 +27,21 @@ cat <<-EOF > new.bash
 ## shellcheck disable=SC1090 ## Can't follow non-constant source. Use a directive to specify location.
 ## shellcheck disable=SC1091 ## Not following: <filename> was not specified as input (see shellcheck -x).
 
-#set -o xtrace      # set -x
+# set -o xtrace      # set -x
 set -o errexit     # set -e : Used to exit upon error, avoiding cascading errors
 set -o pipefail    # Unveils hidden  pipe failures
-#set -o nounset     # Used for [[ -v \$VAR ]]
+# set -o nounset     # Used for [[ -v \$VAR ]]
 set -o errtrace
 
 # 2>&1              # Redirrect stderr to stdout
 #IFS=$' \n\t'       # separator=space/newline/tsab
+#eval "\$(declare -F | sed -e 's/-f /-fx /')" will export all functions.
 
 export FILE="\${0##*/}"
 export CUR_DIR=\$PWD
+#TODO: use function
 export SCRIPTS_DIR="\${0%/*}"
+SCRIPT_PATH="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
 
 function cleanUp() {
     doErr "Aborted by signal"
@@ -55,6 +62,7 @@ function doErr() {
     echo -e "\$RESET" 1>&2
     usage
     sleep 1
+    #sendMail "\$*"
     exit 1
 }
 
@@ -77,7 +85,8 @@ function usage() {
 
 
 function displayTime {
-    local T=$1
+    set +x
+    local T=\$1
     local D=\$((T / 60 / 60 / 24))
     local H=\$((T / 60 / 60 % 24))
     local M=\$((T / 60 % 60))
@@ -125,7 +134,7 @@ function getOpt() {
     colors
     shopt -s nocasematch
 
-    [ \$# -eq 0 ] && doErr "No Options Passed"
+    [ \$# -eq 0 ] && doErr "No Options Passed, if this is intentional pl. pass -- : run.sh -- "
     # [ \$# -eq 0 ] && doWarn "No Options Passed; using default"
     getOptsOptions ## Call function
 
@@ -227,6 +236,36 @@ function getOpt() {
 #     return 0
 # }
 
+function getScriptsDir () {
+     SOURCE="\${BASH_SOURCE[0]}"
+     # While $SOURCE is a symlink, resolve it
+     while [ -h "\$SOURCE" ]; do
+          DIR="\$( cd -P "\$( dirname "\$SOURCE" )" && pwd )"
+          SOURCE="$( readlink "\$SOURCE" )"
+          # If $SOURCE was a relative symlink (so no "/" as prefix, need to resolve it relative to the symlink base directory
+          [[ \$SOURCE != /* ]] && SOURCE="\$DIR/\$SOURCE"
+     done
+     DIR="\$( cd -P "\$( dirname "\$SOURCE" )" && pwd )"
+     echo "\$DIR"
+}
+
+function sendMail() {
+    shopt -s nocasematch
+    local SUBJECT="\$1"
+    local ATTACHMENT=\$2
+    if [[ \$SUBJECT == "help" ]]; then
+        :
+    else
+        if [[ -n \$ATTACHMENT ]]; then
+            #echo "<Mail Body> " | mutt "\${USER}@<company>.com" -s "\$SUBJECT" -a \$ATTACHMENT -c <cc email>
+            :
+        else
+            #echo "<Mail Body> " | mutt "\${USER}@<company>.com" -s "\$SUBJECT" -c <cc email>
+            :
+        fi
+    fi
+    shopt -u nocasematch
+}
 
 function main() {
     START_TIME=\$(date +%s)
@@ -242,3 +281,5 @@ function main() {
 #complete -F _getOptCompletion -o "\$FILE"
 main "\$@";
 EOF
+
+chmod +x "$FILE"

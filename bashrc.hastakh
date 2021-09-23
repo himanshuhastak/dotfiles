@@ -8,7 +8,7 @@
 # bind 'set completion-query-items 150'
 
 alias TOUCH="find -type f -exec touch {} +"
-alias g="gvim -O"
+alias g="gvim -p"
 # alias ls="ls --color"
 alias tmuxKill='tmux kill-server'
 alias vncserver="vncserver :11"
@@ -75,6 +75,27 @@ remove() {
     done
 }
 
+gitPUSH() {
+
+    MESSAGE="$1"
+
+    git status | \grep modified | cut -d':' -f2 | xargs git add
+    git commit -m "$MESSAGE"
+    git push
+}
+p4PUSH() {
+
+    MESSAGE="$1"
+    p4 status ... | awk '{print $1}' | xargs p4 edit
+    p4 submit -d "$MESSAGE" ...
+}
+
+PUSH() {
+    MESSAGE="${1:-commit-minor-mods}"
+    gitPUSH "$MESSAGE"
+    p4PUSH "$MESSAGE"
+
+}
 # connectTmux() {
 #     if ! tmux has-session -t $USER 2>/dev/null; then
 #         tmux new-session -s $USER
@@ -97,3 +118,5 @@ remove() {
 prepend PATH ~/bin
 # export PATH=~/bin:$PATH
 alias less="less -N -i -M -FsRXc -w  "
+
+alias scp="rsync"

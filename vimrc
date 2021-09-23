@@ -1,4 +1,4 @@
-"################################## VIM SETUP COMMANDS ####################################
+"################################## VIM SETUP COMMANDS hastakh ####################################
 
 "BASIC SETUP
 set nocompatible            											" disable compatibility with vi
@@ -121,7 +121,7 @@ set statusline +=%1*%4v\ %*                                            " virtual
 set hidden                  											" hide buffers instead of closing them
 set ttyfast                 											" fast scrolling
 set gdefault                											" %s/foo/bar/ will assume %s/foo/bar/g
-"set shortmess+=A               										" ignore annoying swapfile messages
+set shortmess+=A               										" ignore annoying swapfile messages
 set shortmess+=W                										" don't echo [w]/[written] when writing
 set shortmess+=a                										" use abbreviations in messages eg. `[RO]` instead of `[readonly]`
 set guifont=Courier\ 10\ Pitch  										" Default font
@@ -129,33 +129,33 @@ set updatecount=80              										" update swapfiles every 80 typed char
 set updatetime=200              										" same as YCM
 set tag=tags
 
-"UNDO
-if !isdirectory($HOME."/.vim/.undo-dir")
-    call mkdir($HOME."/.vim/.undo-dir","", 0700)
-endif
-" set undodir=~/.vim/.undo-dir//
-set history=100
-set undolevels=100
-" set undofile
+" "UNDO
+" if !isdirectory($HOME."/.vim/.undo-dir")
+"     call mkdir($HOME."/.vim/.undo-dir","", 0700)
+" endif
+" " set undodir=~/.vim/.undo-dir//
+" set history=100
+" set undolevels=100
+" " set undofile
+" 
+" "BACKUP
+" if !isdirectory($HOME."/.vim/.backup-dir")
+"     call mkdir($HOME."/.vim/.backup-dir","", 0700)
+"     call mkdir($HOME."/.vim/.backupskip-dir","", 0700)
+" endif
+" set backupdir=~/.vim/.backup-dir/
+" set backupskip=~/.vim/.backupskip-dir/
+" set backup
+" set writebackup
+" set backupext=.org
+" "set patchmode=.bak
 
-"BACKUP
-if !isdirectory($HOME."/.vim/.backup-dir")
-    call mkdir($HOME."/.vim/.backup-dir","", 0700)
-    call mkdir($HOME."/.vim/.backupskip-dir","", 0700)
-endif
-set backupdir=~/.vim/.backup-dir/
-set backupskip=~/.vim/.backupskip-dir/
-set backup
-set writebackup
-set backupext=.org
-"set patchmode=.bak
-
-"SWAP FILES
-if !isdirectory($HOME."/.vim/.swp-dir")
-    call mkdir($HOME."/.vim/.swp-dir","", 0700)
-endif
-set directory=~/.vim/.swp-dir/
-set swapfile
+" "SWAP FILES
+" if !isdirectory($HOME."/.vim/.swp-dir")
+"     call mkdir($HOME."/.vim/.swp-dir","", 0700)
+" endif
+" set directory=~/.vim/.swp-dir/
+" set swapfile
 
 " FINDING FILES
 set path+=**                											" search in subfolder ; provide tab-completion
@@ -309,7 +309,7 @@ augroup configgroup
     autocmd BufEnter    Makefile    setlocal noexpandtab
     "autocmd BufEnter *.sh setlocal softtabstop=2
     "SYNTAX HIGHLIGHTING FOR TRACE FILES
-    au BufRead,BufNewFile   *.trc     so $UTILS_HOME/verif/vim
+    ""au BufRead,BufNewFile   *.trc     so $UTILS_HOME/verif/vim
 augroup END
 let fts = ['trc', 'trace', 'dump', 'dmp', 'hex']
 if index(fts, &filetype) == -1
@@ -381,8 +381,8 @@ endif
 "call vundle#end()            " required
 
 "COLORSCHEME
-"colorscheme solarized
-colorscheme default
+colorscheme desert
+"colorscheme default
 
 " call  "filetype plugin on" after pulgins are done
 "ENABLE FILETYPES
@@ -408,15 +408,17 @@ endif
 
 "############################################################ GVIM/gui SPECIFIC #################################################################"
 
-if has('gui_running')
+""if has('gui_running')
     " gvim specific settings here
     "set guioptions-=r                                                  " remove righthand scroll bars
     "set guioptions-=l                                                  " remove lefthand scroll bar
     "set guioptions-=m                                                  " remove menu bar
     "set guioptions-=T                                                  " remove tool bar
     "set guioptions-=b
-    "set go+=m                                                          " display the menu bar
-    set guipty                                                          " pseudo tty for :! command
+    " set go+=m                                                          " display the menu bar
+    " set guioptions+=m                                                  " remove menu bar
+    " set guioptions+=T                                                  " remove tool bar
+    "set guipty                                                          " pseudo tty for :! command
     "set guitablabel
     set fillchars+=vert:│"
-endif
+""endif
