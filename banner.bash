@@ -1,8 +1,8 @@
 #!/bin/bash
 
-FILE=${1:=new.bash}
+NEW_FILE=${1:-new.bash}
 
-cat <<-EOF > $FILE
+cat <<-EOF > $NEW_FILE
 #! /usr/bin/env bash
 # ------------------------------------------------
 # Author:       ${USER}
@@ -37,11 +37,11 @@ set -o errtrace
 #IFS=$' \n\t'       # separator=space/newline/tsab
 #eval "\$(declare -F | sed -e 's/-f /-fx /')" will export all functions.
 
-export FILE="\${0##*/}"
 export CUR_DIR=\$PWD
 #TODO: use function
+THIS_FILE="\${0##*/}"
 export SCRIPTS_DIR="\${0%/*}"
-SCRIPT_PATH="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPTS_PATH="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
 
 function cleanUp() {
     doErr "Aborted by signal"
@@ -80,7 +80,7 @@ function usage() {
     echo usage:
     echo -e "\$END_UNDERLINE \$RESET"
 
-    grep "[[:space:]].*-.*)[[:space:]].*" "\$FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
+    grep "[[:space:]].*-.*)[[:space:]].*" "\$SCRIPTS_DIR/\$FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
 }
 
 
@@ -174,6 +174,7 @@ function getOpt() {
             #doErr "Help"
             usage
             shift
+            exit 1;
             ;;
 
         --) #                       ### options after -- are not parsed {can be passed on to some script later}
@@ -201,7 +202,7 @@ function getOpt() {
     UNPARSED_OPTION_COUNT="\$#"
     echo $EXTRA_ARGS
     if [[ \$UNPARSED_OPTION_COUNT -gt 0 ]]; then
-        # shellcheck disable=SC2001 ## See if you can use \${variable//search/replace} instead. 
+        # shellcheck disable=SC2001 ## See if you can use \${variable//search/replace} instead.
         UNPARSED_OPTION="\$(echo "\$UNPARSED_OPTION" |& sed 's/-- //g')"   # reomve --
         UNPARSED_OPTION_COUNT="\$(echo "\$UNPARSED_OPTION" | sed 's/ /\n/g' |  wc -l)" #(can be simple -1 for the removed --)
         export UNPARSED_OPTION
@@ -210,9 +211,12 @@ function getOpt() {
     fi
 
 }
+#trigger without inheriting parent shell vars, but in a fresh shell
+
+#eval env -i HOME="\$HOME" bash -l -c
 
 # _getOptCompletion() {
-# 
+#
 #     getOptsOptions ## Call function
 #     local shortOpts opts longOpts
 #     shortOpts=\$(IFS=":" && echo \$SHORTOPTS)
@@ -220,19 +224,19 @@ function getOpt() {
 #     longOpts=\$(IFS=":," && echo \$LONGOPTS_WITH_ARG \$LONGOPTS_WITHOUT_ARG)
 #     IFS=" " && for each in \$longOpts; do opts+="--\$each "; done
 #     export ALL_OPTS=\$opts ## All valid opts
-# 
+#
 #     local cur
 #     COMPREPLY=() # Array variable storing the possible completions.
 #     cur="\${COMP_WORDS[COMP_CWORD]}"
 #     #prev="\${COMP_WORDS[COMP_CWORD-1]}"
-# 
+#
 #     case "\$cur" in
 #     -*)
 #         COMPREPLY=(\$(compgen -W "\${ALL_OPTS}" -- \${cur}))
 #         #echo \$COMPREPLY
 #         ;;
 #     esac
-# 
+#
 #     return 0
 # }
 
@@ -271,7 +275,7 @@ function main() {
     START_TIME=\$(date +%s)
     getOpt "\$@"
 
-    echo "DO STUFF HERE" 
+    echo "DO STUFF HERE"
 
     END_TIME=\$(date +%s)
     DURATION=\$((END_TIME - START_TIME))
@@ -282,4 +286,4 @@ function main() {
 main "\$@";
 EOF
 
-chmod +x "$FILE"
+chmod +x "$NEW_FILE"
