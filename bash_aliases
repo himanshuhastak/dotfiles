@@ -203,22 +203,3 @@ unset COLOR
 # shellcheck source=/dev/null                                                                                                   # disable relative path
 source ~/.bashrc.hastakh
 
-
-### Work aliases
-export kernels="/slowfs/us01dwt3p194/madanu/AXS/kernels/HS4x/"
-export configs="/slowfs/us01dwslow020/hastakh/Perforce/dwarc/Hardware/ARCv2HS/main/dev_dual_issue/not_released/cfgs/HS4x/fpga_Linux/Linux/"
-export bitfiles="/slowfs/us01dwt3p194/madanu/HS4x/Linux_bit_files/"
-export customerconfig="/slowfs/us01dwslow020/hastakh/Perforce/dwarc/Hardware/ARCv2HS/main/dev/not_released/src/arcv2hs/config/customer_configs/"
-
-alias iheavy="source /slowfs/us01dwslow020/hastakh/Perforce/dwarc/Verification/utils/farm/iheavy"
-#alias killg "ps -elf | grep hastakh | grep gvim | awk '{print $4}' | xargs"
-
-export u293="/slowfs/us01dwt2p293/hastakh"
-export s020="/slowfs/us01dwslow020/hastakh/RnD/"
-export r109="/remote/us01dwt1s109/hastakh"
-export P4="/slowfs/us01dwslow020/hastakh/Perforce/dwarc"
-export BAE="/slowfs/us01dwslow020/hastakh/Perforce/dwarc/Hardware/ARCv2HS/main/dev/not_released/src/arcv2hs/config/fpga/tests/ARC_BAE"
-export wav2pmon="$P4/Tools/MetaWare/Toolset/main/dev/mdb/os/arc/connect/rascal/wav2pmon/"
-
-
-#
