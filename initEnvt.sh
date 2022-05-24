@@ -13,10 +13,30 @@ chmod g-w ~
 mkdir -p ~/.ssh/
 chmod 744 ~/.ssh
 touch ~/.ssh/authorized_keys
-chmod 700 ~/.ssh
+touch ~/.ssh/config
+
+echo "
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    IdentityFile ~/.ssh/id_rsa 
+    User                hastakh
+    ForwardAgent        yes
+    ForwardX11          yes
+    ForwardX11Trusted   yes
+    #RemoteCommand      exec bash --login && cd /
+    #controlmaster       auto
+    #controlpath         ~/.ssh/control-%h-%p-%r
+    #ControlPersist      yes
+    BatchMode           yes
+    PasswordAuthentication no
+" >> ~/.ssh/config
+
+
 chmod 755 ~/.ssh/authorized_keys
 #chmod 640 ~/.ssh/authorized_keys
 chmod 644 ~/.ssh/config
 chmod 600 ~/.ssh/id_rsa
-#chmod ~ 755 
+chmod 700 ~/.ssh
+#chmod 755 ~
 
