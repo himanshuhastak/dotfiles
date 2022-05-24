@@ -1,5 +1,7 @@
 #!/bin/bash
+#### You need to run this only once
 
+echo "source ~/.bashrc.hastakh"  ~/.bashrc
 # ln -nfs ~/GIT/dotfiles/bash_aliases        ~/.bash_aliases
 ln -nfs ~/GIT/dotfiles/bashrc.hastakh      ~/.bashrc.hastakh
 ln -nfs ~/GIT/dotfiles/vimrc               ~/.vimrc
@@ -39,4 +41,5 @@ chmod 644 ~/.ssh/config
 chmod 600 ~/.ssh/id_rsa
 chmod 700 ~/.ssh
 #chmod 755 ~
+
 
