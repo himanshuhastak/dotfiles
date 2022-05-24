@@ -15,6 +15,7 @@ chmod g-w ~
 mkdir -p ~/.ssh/
 chmod 744 ~/.ssh
 touch ~/.ssh/authorized_keys
+#cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 touch ~/.ssh/config
 
 echo "
