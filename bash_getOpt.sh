@@ -96,7 +96,7 @@ function usage() {
 #     usage
 #     exit 1
 # }
-# 
+#
 # function doWarn() {
 #     echo -e "$YELLOW $DIM [WARNING_INFO]: $YELLOW $* $RESET" 1>&2
 # }
@@ -195,7 +195,7 @@ function getOpt() {
             DESTINATION_DIR=$2
             shift 2
             ;;
-        -a | --action) #             ### Action to be taken in file (copy/move/link/rsync) {Optional: Default: copy }
+        -a | --action)  #             ### Action to be taken in file (copy/move/link/rsync) {Optional: Default: copy }
             WHAT=${2,,} # lower case
             #WHAT=${2^^} # upper case
             case "${WHAT}" in
@@ -250,9 +250,9 @@ function getOpt() {
     UNPARSED_OPTION_COUNT="$#"
     echo $EXTRA_ARGS
     if [[ $UNPARSED_OPTION_COUNT -gt 0 ]]; then
-        # shellcheck disable=SC2001 ## See if you can use \${variable//search/replace} instead. 
-        UNPARSED_OPTION=$(echo $UNPARSED_OPTION |& sed 's/-- //g')   # reomve --
-        UNPARSED_OPTION_COUNT=$(echo $UNPARSED_OPTION | sed 's/ /\n/g' |  wc -l) #(can be simple -1 for the removed --)
+        # shellcheck disable=SC2001 ## See if you can use \${variable//search/replace} instead.
+        UNPARSED_OPTION=$(echo $UNPARSED_OPTION |& sed 's/-- //g')              # reomve --
+        UNPARSED_OPTION_COUNT=$(echo $UNPARSED_OPTION | sed 's/ /\n/g' | wc -l) #(can be simple -1 for the removed --)
         export UNPARSED_OPTION
         export UNPARSED_OPTION_COUNT
         doWarn "$UNPARSED_OPTION_COUNT unparsed options  : $UNPARSED_OPTION"

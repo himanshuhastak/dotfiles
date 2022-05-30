@@ -1,10 +1,14 @@
 #!/bin/bash
 # shellcheck disable=SC2086
+# shellcheck disable=SC2254
 
 # Session Name
 SESSION=$USER
 SESSIONEXISTS=$(tmux list-sessions | grep $USER)
 HOSTLIST="host1 host2 host3"
+shopt -s extglob
+#Note: there should be no spaces : like '@(host1 | host2)'
+MINICOM_HOSTS='@(host1|host2)'
 
 ## As per tmux conf : session pane base ,window base starts with 1
 SESSION_WINDOW_NUMBER=1
@@ -20,9 +24,10 @@ if [ "$SESSIONEXISTS" = "" ]; then
             SESSION_WINDOW_NUMBER=$((SESSION_WINDOW_NUMBER + 1))
             tmux new-window -t $SESSION:$SESSION_WINDOW_NUMBER -n "$host"
             tmux send-keys -t "$host" "ssh -Yt $USER@$host \"export DISPLAY=localhost:10.0 && exec bash -l\" " C-m
+
             case $host in
-            host1 | host2)
-                tmux split-window -h 
+            ${MINICOM_HOSTS})
+                tmux split-window -h
                 #!if we lock minicom other people cant use it, be careful what you wish for or do not lock -o/--noinit
                 tmux send-keys "ssh -Yt $USER@$host \"export DISPLAY=localhost:10.0  && minicom -b 115200 --noinit -D /dev/haps-serial  || exec bash -l\" " C-m
                 ## As per tmux conf : session pane base ,window base starts with 1; set it as default

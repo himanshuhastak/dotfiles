@@ -2,44 +2,45 @@
 
 // https: //stackoverflow.com/a/10090443
 // How to extract specific bits from a number in C?
-#define LAST(k,n) ((k) & ((1<<(n))-1))
-#define MID(k,m,n) LAST((k)>>(m),((n)-(m)))
+#define LAST(k, n) ((k) & ((1 << (n)) - 1))
+#define MID(k, m, n) LAST((k) >> (m), ((n) - (m)))
 
-int main() {
+int main()
+{
     int a = 0xdeadbeef;
-    printf("%x\n",  MID(a,4,16));
+    printf("%x\n", MID(a, 4, 16));
     return 0;
 }
 
-//To get value from specific position 'pos' to 'pos+offset' in number 'value'
+// To get value from specific position 'pos' to 'pos+offset' in number 'value'
 #define bitGet(value, offset, pos) (((1ull << offset) - 1) & (value >> (pos - 1)))
-//Set value 'newval' from position 'pos' to 'pos+offset' in number 'value'
+// Set value 'newval' from position 'pos' to 'pos+offset' in number 'value'
 #define bitSet(value, offset, pos, newval) \
     (~(((1ull << offset) - 1) << (pos - 1)) & value) | ((((1ull << offset) - 1) & newval) << (pos - 1))
 
-//https: //aticleworld.com/macros-for-bit-manipulation-c-cpp/
-//Macro to set nth-bit
-/* 
+// https: //aticleworld.com/macros-for-bit-manipulation-c-cpp/
+// Macro to set nth-bit
+/*
 Set single bit at pos to '1' by generating a mask
-in the proper bit location and ORing (|) x with the mask. 
+in the proper bit location and ORing (|) x with the mask.
 */
 #define SET_BIT(x, pos) (x |= (1U << pos))
 
-//Macro to clear nth-bit
-/* 
+// Macro to clear nth-bit
+/*
 Set single bit at pos to '0' by generating a mask
-in the proper bit location and Anding x with the mask. 
+in the proper bit location and Anding x with the mask.
 */
 #define CLEAR_BIT(x, pos) (x &= (~(1U << pos)))
 
-//Macro to toggle nth-bit
+// Macro to toggle nth-bit
 /*
 Set single bit at pos to '1' by generating a mask
-in the proper bit location and ex-ORing x with the mask. 
+in the proper bit location and ex-ORing x with the mask.
 */
 #define TOGGLE_BIT(x, pos) x ^= (1U << pos)
 
-//Macro to check nth-bit
+// Macro to check nth-bit
 /*
 Set single bit at pos to '1' by generating a mask
 in the proper bit location and Anding x with the mask.
@@ -47,15 +48,14 @@ It evaluates 1 if a bit is set otherwise 0.
 */
 #define CHECK_BIT(x, pos) (x & (1UL << pos))
 
-//Macro to Get bit from the given position
+// Macro to Get bit from the given position
 
 #define GET_BITS(x, pos) ((x & (1 << pos)) >> pos)
 
-
 /* String */
-//https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
+// https://gcc.gnu.org/onlinedocs/cpp/Stringizing.html
 /*If you want to stringize the result of expansion of a macro argument, you have to use two levels of macros.
-*/
+ */
 #define xstr(s) str(s)
 #define str(s) #s
 #define foo 4
@@ -69,7 +69,7 @@ str(foo)
 #define TRUE 1
 #define FALSE 0
 
-                                                                      /* Identifier */
+/* Identifier */
 
 #define AND &&
 #define OR ||
@@ -127,17 +127,17 @@ str(foo)
 #ifndef DEBUG
 #define ASSERT(n)
 #else
-#define ASSERT(n)                         \:w!
+#define ASSERT(n)                         \: w !
 
-    if (!(n))                             \
-    {                                     \
-        printf("%s - Failed ", #n);       \
-        printf("On %s ", __DATE__);       \
-        printf("At %s ", __TIME__);       \
-        printf("In File %s ", __FILE__);  \
-        printf("At Line %d\n", __LINE__); \
-        return (-1);                      \
-    }
+    if (!(n))
+{
+    printf("%s - Failed ", #n);
+    printf("On %s ", __DATE__);
+    printf("At %s ", __TIME__);
+    printf("In File %s ", __FILE__);
+    printf("At Line %d\n", __LINE__);
+    return (-1);
+}
 #endif
 
 #ifdef __cplusplus
@@ -153,23 +153,23 @@ str(foo)
 /* Exit program */
 #define DIE exit(0)
 
-    //https : //www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)Macros.html
+// https : //www.cs.yale.edu/homes/aspnes/pinewiki/C(2f)Macros.html
 #include <stdio.h>
- 
- #define Warning(...) fprintf(stderr, __VA_ARGS__)
 
-            int main(int argc, char **argv)
- {
-     Warning("%s: this program contains no useful code\n", argv[0]);
-     
-     return 1;
- }
+#define Warning(...) fprintf(stderr, __VA_ARGS__)
 
- //https://stackoverflow.com/questions/653839/what-are-c-macros-useful-for
+    int main(int argc, char **argv)
+{
+    Warning("%s: this program contains no useful code\n", argv[0]);
+
+    return 1;
+}
+
+// https://stackoverflow.com/questions/653839/what-are-c-macros-useful-for
 #define BIT(x) (1 << (x))
 
- /* Compare strings */
+/* Compare strings */
 #define STRCMP(A, o, B) (strcmp((A), (B)) o 0)
 
- /* Compare memory */
+/* Compare memory */
 #define MEMCMP(A, o, B) (memcmp((A), (B)) o 0)

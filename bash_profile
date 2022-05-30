@@ -1,5 +1,6 @@
 # shellcheck shell=bash
 # shellcheck source=$HOME                                                                     # diable relative paths
+# shellcheck disable=SC1091 ## Not following: <filename> was not specified as input (see shellcheck -x).
 
 
 # # bash

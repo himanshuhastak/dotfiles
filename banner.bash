@@ -1,8 +1,9 @@
 #!/bin/bash
+# shellcheck disable=SC2086 ## Double quote to prevent globbing and word splitting.
 
 NEW_FILE=${1:-new.bash}
 
-cat <<-EOF > $NEW_FILE
+cat <<-EOF >$NEW_FILE
 #! /usr/bin/env bash
 # ------------------------------------------------
 # Author:       ${USER}
@@ -246,7 +247,7 @@ function getScriptsDir () {
      # While $SOURCE is a symlink, resolve it
      while [ -h "\$SOURCE" ]; do
           DIR="\$( cd -P "\$( dirname "\$SOURCE" )" && pwd )"
-          SOURCE="$( readlink "\$SOURCE" )"
+          SOURCE="$(readlink "\$SOURCE")"
           # If $SOURCE was a relative symlink (so no "/" as prefix, need to resolve it relative to the symlink base directory
           [[ \$SOURCE != /* ]] && SOURCE="\$DIR/\$SOURCE"
      done

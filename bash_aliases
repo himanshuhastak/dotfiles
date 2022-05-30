@@ -1,4 +1,5 @@
 # shellcheck shell=bash
+# shellcheck disable=SC2086 ## Double quote to prevent globbing and word splitting.
 #GENERAL
 alias g='gvim -o' # alias gvim
 alias h='history'
@@ -27,7 +28,7 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 alias tao='task add project:office'
 alias TAR='tar -cvzf'
-alias UNTAR='tar -xvzf'function
+alias UNTAR='tar -xvzf'
 
 #GIT ALIASES
 alias gcl='git clone'
@@ -44,7 +45,7 @@ mkcd() {
 }
 
 GIT() {
-    IFS='\n'
+    IFS=$'\n'
     local file="$1"
     local comment="$2"
     ga "$file"
@@ -60,6 +61,7 @@ FGPULL() {
 }
 
 Calc() {
+    #shellcheck disable=2027 # The surrounding quotes actually unquote this. Remove or escape them.
     python -c "from math import *  ; print "${*}" "
 }
 
@@ -105,8 +107,10 @@ remove() {
         if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then # match is between both leading and trailing content
             printf -v "$var" '%s%s' "${BASH_REMATCH[1]%$sep}" "${BASH_REMATCH[2]}"
         elif [[ ${BASH_REMATCH[1]} ]]; then # match is at the end
+            #shellcheck disable=SC2059 #Don't use variables in the printf format string. Use printf '..%s..' "$foo".
             printf -v "$var" "${BASH_REMATCH[1]%$sep}"
         else # match is at the beginning
+            #shellcheck disable=SC2059 #Don't use variables in the printf format string. Use printf '..%s..' "$foo".
             printf -v "$var" "${BASH_REMATCH[2]#$sep}"
         fi
     done
