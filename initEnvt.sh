@@ -2,7 +2,7 @@
 #### You need to run this only once
 
 echo "source ~/.bashrc.hastakh"  ~/.bashrc
-# ln -nfs ~/GIT/dotfiles/bash_aliases        ~/.bash_aliases
+ln -nfs ~/GIT/dotfiles/bash_aliases        ~/.bash_aliases
 ln -nfs ~/GIT/dotfiles/bashrc.hastakh      ~/.bashrc.hastakh
 ln -nfs ~/GIT/dotfiles/vimrc               ~/.vimrc
 ln -nfs ~/GIT/dotfiles/tmux.conf           ~/.tmux.conf
@@ -40,6 +40,7 @@ chmod 755 ~/.ssh/authorized_keys
 #chmod 640 ~/.ssh/authorized_keys
 chmod 644 ~/.ssh/config
 chmod 600 ~/.ssh/id_rsa
+chmod 644 ~/.ssh/id_rsa.pub
 chmod 700 ~/.ssh
 #chmod 755 ~
 

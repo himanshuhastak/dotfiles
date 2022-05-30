@@ -80,9 +80,10 @@ function usage() {
     echo usage:
     echo -e "\$END_UNDERLINE \$RESET"
 
-    grep "[[:space:]].*-.*)[[:space:]].*" "\$SCRIPTS_DIR/\$FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
+    grep "[[:space:]].*-.*)[[:space:]].*" "\$SCRIPTS_DIR/\$THIS_FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
 }
 
+function calc() { awk "BEGIN { print \$* }"; }
 
 function displayTime {
     set +x
