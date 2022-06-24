@@ -36,6 +36,12 @@ Host *
     PasswordAuthentication no
 " >> ~/.ssh/config
 
+echo "
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git" >> ~/.ssh/config
+
 
 chmod 755                               ~/.ssh/authorized_keys
 #chmod 640                              ~/.ssh/authorized_keys

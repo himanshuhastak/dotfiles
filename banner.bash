@@ -285,6 +285,7 @@ function main() {
 }
 
 #complete -F _getOptCompletion -o "\$FILE"
+#shopt -u hostcomplete && 
 main "\$@";
 EOF
 
