@@ -154,7 +154,8 @@ function getOpt() {
     while true; do
         case "\$1" in
         -f | --file-name) #         ### filename to me "action"ed upon {Required}
-            export FILE_NAME=\$2
+            file_name=\$(readlink -f -- "\$2")
+            export FILE_NAME=\$file_name
             shift 2
             ;;
 
