@@ -16,7 +16,7 @@ alias lsd='ls -d */ $COLOR' # show all dirs
 #GREP COLOUR
 alias grep='grep $COLOR' # color grep
 #COLORDIFF
-alias diff='colordiff'
+#alias diff='colordiff'
 
 #MISC
 alias df='df -h'  # df human redable

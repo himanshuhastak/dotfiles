@@ -23,14 +23,14 @@ if [ "$SESSIONEXISTS" = "" ]; then
         if [[ "$HOSTNAME" != "$host" ]]; then
             SESSION_WINDOW_NUMBER=$((SESSION_WINDOW_NUMBER + 1))
             tmux new-window -t $SESSION:$SESSION_WINDOW_NUMBER -n "$host"
-            tmux send-keys -t "$host" "ssh -Yt $USER@$host \"export DISPLAY=localhost:10.0 && exec bash -l\" " C-m
+            tmux send-keys -t "$host" "ssh -Yt $USER@$host \"export DISPLAY=:51 && exec bash -l\" " C-m
 
             case $host in
             ${MINICOM_HOSTS})
             SPLIT_RATIO=${SPLIT_RATIO:-25}
                 tmux split-window -h -p $SPLIT_RATIO
                 #!if we lock minicom other people cant use it, be careful what you wish for or do not lock -o/--noinit
-                tmux send-keys "ssh -Yt $USER@$host \"export DISPLAY=localhost:10.0  && minicom -b 115200 --noinit -D /dev/haps-serial  || exec bash -l\" " C-m
+                tmux send-keys "ssh -Yt $USER@$host \"export DISPLAY=:51  && minicom -b 115200 --noinit -D /dev/haps-serial  || exec bash -l\" " C-m
                 ## As per tmux conf : session pane base ,window base starts with 1; set it as default
                 tmux select-pane -t 1
                 ;;
