@@ -11,6 +11,11 @@ mkdir -p ~/bin
 ln -nfs ~/GIT/dotfiles/rsync.sh             ~/bin/rsync.sh
 #ln -nfs ~/GIT/dotfiles/tmux.sh             ~/bin/tmux.sh
 
+imkdir -p ~/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/wenijinew/eu.tmux.git ~/.tmux/plugins/eu.tmux
+
+
 #### SSH stuff
 chmod g-w ~
 mkdir -p                                    ~/.ssh/
@@ -23,7 +28,7 @@ echo "
 Host *
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
-    IdentityFile ~/.ssh/id_rsa 
+    IdentityFile ~/.ssh/id_rsa
     User                hastakh
     ForwardAgent        yes
     ForwardX11          yes
