@@ -38,10 +38,10 @@ set -o errtrace
 #IFS=$' \n\t'       # separator=space/newline/tsab
 #eval "\$(declare -F | sed -e 's/-f /-fx /')" will export all functions.
 
-export CUR_DIR=\$PWD
+CUR_DIR=\$PWD
 #TODO: use function
 THIS_FILE="\${0##*/}"
-export SCRIPTS_DIR="\${0%/*}"
+#export SCRIPTS_DIR="\${0%/*}"
 SCRIPTS_PATH="\$( cd "\$( dirname "\${BASH_SOURCE[0]}" )" && pwd )"
 
 function cleanUp() {
@@ -81,7 +81,7 @@ function usage() {
     echo usage:
     echo -e "\$END_UNDERLINE \$RESET"
 
-    grep "[[:space:]].*-.*)[[:space:]].*" "\$SCRIPTS_DIR/\$THIS_FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
+    grep "[[:space:]].*-.*)[[:space:]].*" "\$SCRIPTS_PATH/\$THIS_FILE" | sed 's/###//g' | sed '/grep/d' | sed 's/#//g'
 }
 
 function calc() { awk "BEGIN { print \$* }"; }
@@ -120,6 +120,13 @@ function colors() {
     export BOLD
     export RESET
 
+}
+function checkEnv() { 
+    [ ! -z \$(printenv \$1) ] || doErr "\$1 Env Not set" 
+    } 
+
+function setEnv() {
+    #export A=B
 }
 
 function getOptsOptions() {

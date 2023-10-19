@@ -217,5 +217,8 @@ allcolors() {
 
 unset COLOR
 
+alias source-r=source_r
+alias echo-v=echo_v
+
 # shellcheck source=/dev/null                                                                                                   # disable relative path
 source ~/.bashrc.hastakh

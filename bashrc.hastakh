@@ -7,38 +7,43 @@
 # bind 'set visible-stats on'
 # bind 'set completion-query-items 150'
 
-shopt -u progcomp
+# shopt -u progcomp
+#
+# _ssh()
+# {
+#     local cur prev opts
+#     COMPREPLY=()
+#     cur="${COMP_WORDS[COMP_CWORD]}"
+#     prev="${COMP_WORDS[COMP_CWORD-1]}"
+#     opts=$(\grep '^Host' ~/.ssh/config | awk '{print $2}' | sed '/*/d')
+#
+#     COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+#     return 0
+# }
+# complete -F _ssh ssh
+# complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | \
+# sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
+#
+# WL="$(perl -ne 'print "$1\n" if /^Host (.+)$/' ~/.ssh/config | grep -v "*" | tr "\n" " ")"
+# complete -o plusdirs -f -W "$WL" ssh scp
 
-_ssh() 
-{
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts=$(\grep '^Host' ~/.ssh/config | awk '{print $2}' | sed '/*/d')
+current_shell=$(readlink -- /proc/$$/exe)
+current_shell=${current_shell:-bash}
+#echo $current_shell
 
-    COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
-    return 0
-}
-complete -F _ssh ssh
-complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | \
-    sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
-
-WL="$(perl -ne 'print "$1\n" if /^Host (.+)$/' ~/.ssh/config | grep -v "*" | tr "\n" " ")"
-complete -o plusdirs -f -W "$WL" ssh scp
-
+#if [[ $current_shell == *"sh" ]]; then
 setenv() {
     export "$1=$2"
+}
+#fi
+
+prepend-path() {
+    export "$1=$2:$1"
 }
 
 function date_ist() {
     TZ=Asia/Calcutta date
     #date
-}
-FGPULL() {
-    local branch=${1:-master}
-    git fetch --all
-    git reset --hard origin/$branch
 }
 
 Calc() {
@@ -54,38 +59,11 @@ Calc() {
     python3 -c "from math import *  ; print(f'{$what:_b}') "
 }
 
-prepend() {
-    local var=$1
-    local val=$2
-    local sep=${3:-":"}
-    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return        # already present
-    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
-    printf -v "$var" '%s%s%s' "$val" "$sep" "${!var}"            # prepend
-}
-
-append() {
-    local var=$1
-    local val=$2
-    local sep=${3:-":"}
-    [[ ${!var} =~ (^|"$sep")"$val"($|"$sep") ]] && return        # already present
-    [[ ${!var} ]] || { printf -v "$var" '%s' "$val" && return; } # empty
-    printf -v "$var" '%s%s%s' "${!var}" "$sep" "${val}"          # append
-}
-
-remove() {
-    local var=$1
-    local val=$2
-    local sep=${3:-":"}
-    while [[ ${!var} =~ (^|.*"$sep")"$val"($|"$sep".*) ]]; do
-        if [[ ${BASH_REMATCH[1]} && ${BASH_REMATCH[2]} ]]; then # match is between both leading and trailing content
-            printf -v "$var" '%s%s' "${BASH_REMATCH[1]%$sep}" "${BASH_REMATCH[2]}"
-        elif [[ ${BASH_REMATCH[1]} ]]; then # match is at the end
-            printf -v "$var" "${BASH_REMATCH[1]%$sep}"
-        else # match is at the beginning
-            printf -v "$var" "${BASH_REMATCH[2]#$sep}"
-        fi
-    done
-}
+if [[ $current_shell == *"bash" ]]; then
+    source ~hastakh/GIT/dotfiles/bashFunctions.bash
+elif [[ $current_shell == *"zsh" ]]; then
+    source ~hastakh/GIT/dotfiles/zshFunctions.zsh
+fi
 
 gitPUSH() {
 
@@ -127,13 +105,35 @@ PUSH() {
 # WORK=snps
 # createOrConnectTmux;
 # connectTmux
-if [[ "$HOSTNAME" == "us01odcvde13266" ]]; then #us01odcvde13266
-    # source ~/bin/tmux.sh
-    :
-fi
-prepend PATH ~/bin
 
-export P4_SYNC="p4 sync -q --parallel=threads=$(nproc),batch=8,batchsize=524288,min=1,minsize=524288 "
+export PATH=$PATH:~/bin
+
+alias tao='task add project:office'
+alias TAR='tar -cvzf'
+alias TOUCH="find -type f -exec touch {} +"
+alias tmuxKill='tmux kill-server'
+alias vncserver="vncserver :51"
+alias P4_SYNC="p4 sync -q --parallel=threads=$(nproc),batch=8,batchsize=524288,min=1,minsize=524288 "
+
+alias ssh="ssh -Y"
+alias less="less -N -i -M -FsRXc -w  "
+alias sdiff="sdiff --ignore-tab-expansion --ignore-space-change --ignore-all-space --ignore-blank-lines --strip-trailing-cr --text --minimal --speed-large-files --suppress-common-lines "
+#### We can do the below kinds of alias hack because we have prepend PATH ~/bin
+alias scp="rsync.sh"
+#alias cp="rsync.sh"
 export HOST=${HOSTNAME}
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    alias g=code
+else
+    alias g=gvim
+fi
+alias r="readlink -f -- "
 #$P4_SYNC&
 #export SSH_AUTH_SOCK=0
+
+if [[ $current_shell == *"zsh" ]]; then
+    autoload -Uz compinit
+    zstyle ':completion:*' menu select
+    fpath+=~/.zfunc
+    setopt correct_all
+fi
