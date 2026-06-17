@@ -1,0 +1,43 @@
+# ~/.bashrc.bkp — archived full bash setup (before zsh handoff).
+# Restore:  cp ~/.bashrc.bkp ~/.bashrc
+
+# ~/.bashrc — interactive + non-login bash shells
+
+# Source global definitions.
+[[ -f /etc/bashrc ]] && . /etc/bashrc
+
+# Universal config shared with zsh (env, PATH, functions, aliases).
+[[ -r ~/.shrc ]] && . ~/.shrc
+
+# Skip interactive-only setup for scripts and non-interactive shells.
+case $- in *i*) ;; *) return ;; esac
+
+# ble.sh — load early in --noattach mode; we ble-attach at the very end so it
+# wraps fzf/atuin keybindings and the prompt (gives bash syntax highlighting +
+# autosuggestions, the counterpart to the zsh ZLE plugins).
+if [[ -f "${TOOLS_DIR:-$HOME/dotfiles/.tools}/blesh/ble.sh" ]]; then
+  source "${TOOLS_DIR:-$HOME/dotfiles/.tools}/blesh/ble.sh" --noattach
+fi
+
+# --- bash-only settings ---
+shopt -s histappend checkwinsize
+HISTSIZE=100000
+HISTFILESIZE=200000
+HISTCONTROL=ignoreboth
+
+# --- tool hooks (guarded; binaries from $TOOLS_DIR/bin) ---
+if command -v fzf >/dev/null 2>&1 && fzf --bash >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
+command -v zoxide   >/dev/null 2>&1 && eval "$(zoxide init bash)"
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+command -v atuin    >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow)"
+command -v direnv   >/dev/null 2>&1 && eval "$(direnv hook bash)"
+# broot: defines the `br` launcher (lets you cd into the picked directory).
+command -v broot    >/dev/null 2>&1 && eval "$(broot --print-shell-function bash 2>/dev/null)"
+
+# Attach ble.sh last so it wraps the final keymap/prompt setup above.
+[[ ${BLE_VERSION-} ]] && ble-attach
+
+_br_launcher="${XDG_CONFIG_HOME:-$HOME/.config}/broot/launcher/bash/br"
+[ -r "$_br_launcher" ] && . "$_br_launcher"

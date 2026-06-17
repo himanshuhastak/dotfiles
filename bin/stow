@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Wrapper for vendored stow-python (stow.py is fetched by scripts/install-stow.sh).
+exec python3 "$(dirname "$0")/stow.py" "$@"

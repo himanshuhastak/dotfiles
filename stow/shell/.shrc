@@ -1,0 +1,173 @@
+# ~/.shrc — universal shell config (works in bash AND zsh).
+# Sourced by ~/.bashrc and ~/.zshrc. Keep everything POSIX-ish:
+# no bash-only ${!var}, read -ra, printf -v, or ${arr[@]} index tricks.
+
+export TERM="${TERM:-xterm-256color}"
+export HOST="${HOST:-$HOSTNAME}"
+
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+# ---------------------------------------------------------------------------
+# PATH helpers (portable indirection via eval; dedup-safe)
+# ---------------------------------------------------------------------------
+field_prepend() {
+  local var=$1 val=$2 sep=${3:-:} cur
+  eval "cur=\${$var:-}"
+  case "$sep$cur$sep" in *"$sep$val$sep"*) return ;; esac
+  if [ -z "$cur" ]; then eval "$var=\$val"; else eval "$var=\"\$val\$sep\$cur\""; fi
+}
+field_append() {
+  local var=$1 val=$2 sep=${3:-:} cur
+  eval "cur=\${$var:-}"
+  case "$sep$cur$sep" in *"$sep$val$sep"*) return ;; esac
+  if [ -z "$cur" ]; then eval "$var=\$val"; else eval "$var=\"\$cur\$sep\$val\""; fi
+}
+setenv()       { export "$1=$2"; }
+prepend-path() { field_prepend "$1" "$2"; }
+source_r()     { [ -r "$1" ] && . "$1"; }
+_path_prepend() { [ -d "$1" ] && field_prepend PATH "$1"; }
+
+# ---------------------------------------------------------------------------
+# TOOLS_DIR — self-owned tools tree shipped with this dotfiles repo.
+# (No system/NFS reuse — binaries live under <repo>/.tools/bin.)
+# ---------------------------------------------------------------------------
+if [ -z "${TOOLS_DIR:-}" ]; then
+  for _d in "$HOME/dotfiles/.tools" "$HOME/dotfiles_new/.tools"; do
+    [ -d "$_d/bin" ] && { TOOLS_DIR="$_d"; break; }
+  done
+fi
+export TOOLS_DIR="${TOOLS_DIR:-$HOME/dotfiles/.tools}"
+export DOTFILES_DIR="${TOOLS_DIR%/.tools}"
+
+export EDITOR="${EDITOR:-vim}"
+export PAGER="${PAGER:-less}"
+
+# ---------------------------------------------------------------------------
+# PATH
+# ---------------------------------------------------------------------------
+_path_prepend "$TOOLS_DIR/bin"
+_path_prepend "$DOTFILES_DIR/bin"
+_path_prepend "$HOME/bin"
+_path_prepend "$HOME/.local/bin"
+export PATH
+
+# ---------------------------------------------------------------------------
+# Functions (portable across bash + zsh)
+# ---------------------------------------------------------------------------
+date_ist() { TZ=Asia/Calcutta date "$@"; }
+
+bkup() {
+  [ -e "$1" ] || { echo "Error: '$1' does not exist" >&2; return 1; }
+  if [ -e "$1.bkp" ]; then
+    local ts; ts=$(date_ist +%Y%m%d_%H%M%S)
+    mv "$1.bkp" "$1.bkp_$ts" || return 1
+    echo "Archived existing backup: $1.bkp -> $1.bkp_$ts"
+  fi
+  echo "Moving $1 to $1.bkp"; mv "$1" "$1.bkp"
+}
+bkp() {
+  [ -e "$1" ] || { echo "Error: '$1' does not exist" >&2; return 1; }
+  if [ -e "$1.bkp" ]; then
+    local ts; ts=$(date_ist +%Y%m%d_%H%M%S)
+    mv "$1.bkp" "$1.bkp_$ts" || return 1
+    echo "Archived existing backup: $1.bkp -> $1.bkp_$ts"
+  fi
+  cp -rf "$1" "$1.bkp" && echo "Copied: $1 -> $1.bkp"
+}
+untar_file() {
+  local file="$1"
+  [ -z "$file" ] && { echo "Usage: untar_file <file>"; return 1; }
+  case "$file" in
+    *.tar.bz2) tar xvjf "$file" ;;
+    *.tar.gz)  tar xvzf "$file" ;;
+    *.tar.xz)  tar xvJf "$file" ;;
+    *.tar)     tar xvf  "$file" ;;
+    *.bz2)     bunzip2  "$file" ;;
+    *.gz)      gunzip   "$file" ;;
+    *.xz)      unxz     "$file" ;;
+    *.zip)     unzip    "$file" ;;
+    *)         echo "Unsupported file extension: $file" ;;
+  esac
+}
+mkcd() { mkdir -pv "$1" && cd "$1" || return; }
+
+# Smart cd: normal paths first; fall back to zoxide `z` for frecent dir names.
+cd() {
+  if [ $# -eq 0 ]; then builtin cd; return; fi
+  if builtin cd "$@" 2>/dev/null; then return 0; fi
+  if [ $# -eq 1 ] && command -v z >/dev/null 2>&1; then z "$1"; return; fi
+  builtin cd "$@"
+}
+
+Calc() {
+  local what="$*"
+  python3 -c "from math import * ; print(f'{$what}')"
+  python3 -c "from math import * ; print(f'{$what:,}')"
+  python3 -c "from math import * ; print(f'{$what:X}')"
+  python3 -c "from math import * ; print(f'{$what:b}')"
+}
+
+# ---------------------------------------------------------------------------
+# Aliases (portable)
+# ---------------------------------------------------------------------------
+alias ls='ls --color'
+alias l='ls'
+alias ll='ls -al --color'
+alias grep='grep --color=auto'
+alias df='df -h'
+alias du='du -sh'
+alias mkdir='mkdir -pv'
+alias rm='rm -iv'
+alias mv='mv -iv'
+alias h='history'
+alias less='less -N -i -M -FsRXc -w'
+alias ssh='ssh -Y'
+alias mkm='mkcd "$(date_ist +%Y-%m)"'
+alias mkd='mkcd "$(date_ist +%Y-%m-%d)"'
+
+# --- modern CLI replacements (only when installed) ---
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --group-directories-first --icons=auto'
+  alias ll='eza -lah --git --group-directories-first --icons=auto'
+  alias lt='eza --tree --level=2 --icons=auto'
+  alias tree='eza --tree --icons=auto'
+fi
+command -v bat      >/dev/null 2>&1 && alias cat='bat --paging=never'
+command -v bat      >/dev/null 2>&1 && alias less='bat'
+command -v rg       >/dev/null 2>&1 && alias grep='rg --smart-case'
+command -v rg       >/dev/null 2>&1 && alias rgi='rg -i'
+command -v fd       >/dev/null 2>&1 && alias find='fd'
+command -v fd       >/dev/null 2>&1 && alias fdh='fd --hidden --no-ignore'
+command -v choose   >/dev/null 2>&1 && alias cut='choose'
+command -v sd       >/dev/null 2>&1 && alias sed='sd'
+command -v dust     >/dev/null 2>&1 && alias du='dust'
+command -v duf      >/dev/null 2>&1 && alias df='duf'
+command -v gdu      >/dev/null 2>&1 && alias ncdu='gdu'
+command -v procs    >/dev/null 2>&1 && alias ps='procs'
+command -v oc-rsync >/dev/null 2>&1 && alias rsync='oc-rsync'
+command -v lazygit  >/dev/null 2>&1 && alias lg='lazygit'
+command -v just     >/dev/null 2>&1 && alias j='just'
+command -v zellij   >/dev/null 2>&1 && alias zj='zellij'
+command -v tldr     >/dev/null 2>&1 && alias help='tldr'
+command -v task     >/dev/null 2>&1 && alias t='task'
+command -v taskwarrior-tui >/dev/null 2>&1 && alias tt='taskwarrior-tui'
+command -v timew    >/dev/null 2>&1 && alias tw='timew'
+command -v delta    >/dev/null 2>&1 && export GIT_PAGER=delta
+
+# fzf defaults (use fd for traversal when available).
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:---height 60% --layout=reverse --border --info=inline}"
+if command -v fd >/dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
+# Smart editor: cursor/code inside VS Code/Cursor terminals, else gvim/vim.
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+  if   command -v cursor >/dev/null 2>&1; then alias g='cursor'
+  elif command -v code   >/dev/null 2>&1; then alias g='code'; fi
+else
+  if   command -v gvim >/dev/null 2>&1; then alias g='gvim'
+  elif command -v vim  >/dev/null 2>&1; then alias g='vim'; fi
+fi

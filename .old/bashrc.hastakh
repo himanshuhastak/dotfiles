@@ -1,0 +1,139 @@
+#!/bin/bash
+# shellcheck shell=bash
+
+# bind 'set completion-ignore-case on' # tab-autocomplete case-insensitive
+# bind 'set show-all-if-ambiguous on'
+# bind 'set match-hidden-files off'
+# bind 'set visible-stats on'
+# bind 'set completion-query-items 150'
+
+# shopt -u progcomp
+#
+# _ssh()
+# {
+#     local cur prev opts
+#     COMPREPLY=()
+#     cur="${COMP_WORDS[COMP_CWORD]}"
+#     prev="${COMP_WORDS[COMP_CWORD-1]}"
+#     opts=$(\grep '^Host' ~/.ssh/config | awk '{print $2}' | sed '/*/d')
+#
+#     COMPREPLY=( $(compgen -W "$opts" -- ${cur}) )
+#     return 0
+# }
+# complete -F _ssh ssh
+# complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | \
+# sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
+#
+# WL="$(perl -ne 'print "$1\n" if /^Host (.+)$/' ~/.ssh/config | grep -v "*" | tr "\n" " ")"
+# complete -o plusdirs -f -W "$WL" ssh scp
+
+current_shell=$(readlink -- /proc/$$/exe)
+current_shell=${current_shell:-bash}
+#echo $current_shell
+
+#if [[ $current_shell == *"sh" ]]; then
+setenv() {
+    export "$1=$2"
+}
+#fi
+
+prepend-path() {
+    export "$1=$2:$1"
+}
+
+function date_ist() {
+    TZ=Asia/Calcutta date
+    #date
+}
+
+Calc() {
+    local what="$*"
+    echo ""
+    python3 -c "from math import *  ; print(f'{$what}') "
+    python3 -c "from math import *  ; print(f'{$what:,}') "
+    echo ""
+    python3 -c "from math import *  ; print(f'{$what:X}') "
+    python3 -c "from math import *  ; print(f'{$what:_X}') "
+    echo ""
+    python3 -c "from math import *  ; print(f'{$what:b}') "
+    python3 -c "from math import *  ; print(f'{$what:_b}') "
+}
+
+if [[ $current_shell == *"bash" ]]; then
+    source ~hastakh/GIT/dotfiles/bashFunctions.bash
+elif [[ $current_shell == *"zsh" ]]; then
+    source ~hastakh/GIT/dotfiles/zshFunctions.zsh
+fi
+
+gitPUSH() {
+
+    MESSAGE="$1"
+
+    git status | \grep modified | cut -d':' -f2 | xargs git add
+    git commit -m "$MESSAGE"
+    git push
+}
+p4PUSH() {
+
+    MESSAGE="$1"
+    p4 status ... | awk '{print $1}' | xargs p4 edit
+    p4 submit -d "$MESSAGE" ...
+}
+
+PUSH() {
+    MESSAGE="${1:-commit-minor-mods}"
+    gitPUSH "$MESSAGE"
+    p4PUSH "$MESSAGE"
+
+}
+# connectTmux() {
+#     if ! tmux has-session -t $USER 2>/dev/null; then
+#         tmux new-session -s $USER
+#     else
+#         tmux rename-session $USER
+#     fi
+#     if ! [[ $(tmux display-message -p '#S') == $USER ]]; then
+#         tmux switch-client -t $USER
+#         tmux kill-session -a -t $USER
+#     fi
+# }
+#
+# createOrConnectTmux() {
+#     connectTmux || tmux new-session -s $USER
+# }
+
+# WORK=snps
+# createOrConnectTmux;
+# connectTmux
+
+export PATH=$PATH:~/bin
+
+alias tao='task add project:office'
+alias TAR='tar -cvzf'
+alias TOUCH="find -type f -exec touch {} +"
+alias tmuxKill='tmux kill-server'
+alias vncserver="vncserver :51"
+alias P4_SYNC="p4 sync -q --parallel=threads=$(nproc),batch=8,batchsize=524288,min=1,minsize=524288 "
+
+alias ssh="ssh -Y"
+alias less="less -N -i -M -FsRXc -w  "
+alias sdiff="sdiff --ignore-tab-expansion --ignore-space-change --ignore-all-space --ignore-blank-lines --strip-trailing-cr --text --minimal --speed-large-files --suppress-common-lines "
+#### We can do the below kinds of alias hack because we have prepend PATH ~/bin
+alias scp="rsync.sh"
+#alias cp="rsync.sh"
+export HOST=${HOSTNAME}
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    alias g=code
+else
+    alias g=gvim
+fi
+alias r="readlink -f -- "
+#$P4_SYNC&
+#export SSH_AUTH_SOCK=0
+
+if [[ $current_shell == *"zsh" ]]; then
+    autoload -Uz compinit
+    zstyle ':completion:*' menu select
+    fpath+=~/.zfunc
+    setopt correct_all
+fi
