@@ -46,3 +46,5 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 _br_launcher="${XDG_CONFIG_HOME:-$HOME/.config}/broot/launcher/bash/br"
 [ -r "$_br_launcher" ] && . "$_br_launcher"
+
+[[ -r ~/.zshrc.$USER ]] && . ~/.zshrc.$USER
