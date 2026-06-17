@@ -2,4 +2,4 @@
 
 [[ -f /etc/bashrc ]] && . /etc/bashrc
 case $- in *i*) ;; *) return ;; esac
-# exec zsh
+exec zsh
