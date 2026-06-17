@@ -6,3 +6,4 @@ Collection of dotfiles
 4. bashrc
 5. taskwarrior rc
 6. tmux conf
+
